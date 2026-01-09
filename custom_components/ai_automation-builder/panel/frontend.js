@@ -1,222 +1,180 @@
-class AIAutomationBuilder {
+import { LitElement, html, css } from "https://unpkg.com/lit@2.8.0?module";
+
+class AIAutomationBuilderCard extends LitElement {
+    static get properties() {
+        return {
+            hass: { type: Object },
+            config: { type: Object },
+            currentTab: { type: String },
+            yamlOutput: { type: String },
+            validationResult: { type: Object },
+            isLoading: { type: Boolean }
+        };
+    }
+
     constructor() {
-        this.hass = null;
-        this.config = null;
+        super();
         this.currentTab = 'generate';
-        this.templates = {
+        this.yamlOutput = '';
+        this.validationResult = null;
+        this.isLoading = false;
+        this.lang = 'it';
+    }
+
+    connectedCallback() {
+        super.connectedCallback();
+        if (this.hass) {
+            this.lang = this.hass.locale?.language || 'it';
+        }
+    }
+
+    setConfig(config) {
+        this.config = config;
+    }
+
+    set hass(hass) {
+        this._hass = hass;
+        this.lang = hass?.locale?.language || 'it';
+    }
+
+    get hass() {
+        return this._hass;
+    }
+
+    get translations() {
+        return {
             it: {
-                luci: { name: 'Luci notturne', prompt: 'Accendi le luci del salotto alle 20:00 solo se sono scuro' },
-                intrusione: { name: 'Antintrusione', prompt: 'Invia notifica se porta aperta di notte' },
-                lavatrice: { name: 'Lavatrice finita', prompt: 'Notificami quando la lavatrice ha finito' }
+                title: '🧠 AI Automation Builder',
+                connected: 'Connesso',
+                placeholder: 'Descrivi l\'automazione (es: Accendi luci alle 20:00)...',
+                generate: '🧠 Genera Automazione',
+                export: '📥 Esporta YAML',
+                validate: '✅ Valida YAML',
+                tabs: { flow: '📊 Flow', yaml: '📝 YAML', validate: '✅ Validazione' },
+                templates: 'Template rapidi:',
+                template1: 'Luci notturne',
+                template2: 'Antintrusione',
+                template3: 'Lavatrice',
+                generating: '⏳ Generando...',
+                error: '❌ Errore',
+                success: '✅ Successo',
+                validYaml: '✅ YAML valido!',
+                invalidYaml: '❌ YAML non valido:'
             },
             en: {
-                lights: { name: 'Night lights', prompt: 'Turn on living room lights at 8 PM only if dark' },
-                intrusion: { name: 'Intrusion alert', prompt: 'Send notification if door opens at night' },
-                washer: { name: 'Washer done', prompt: 'Notify me when washing machine is done' }
+                title: '🧠 AI Automation Builder',
+                connected: 'Connected',
+                placeholder: 'Describe your automation (e.g., Turn on lights at 8 PM)...',
+                generate: '🧠 Generate Automation',
+                export: '📥 Export YAML',
+                validate: '✅ Validate YAML',
+                tabs: { flow: '📊 Flow', yaml: '📝 YAML', validate: '✅ Validation' },
+                templates: 'Quick templates:',
+                template1: 'Night lights',
+                template2: 'Intrusion alert',
+                template3: 'Washer done',
+                generating: '⏳ Generating...',
+                error: '❌ Error',
+                success: '✅ Success',
+                validYaml: '✅ YAML is valid!',
+                invalidYaml: '❌ YAML is invalid:'
             }
         };
     }
 
-    async init(hass) {
-        this.hass = hass;
-        this.lang = hass.locale?.language || 'it';
-        this.setupEventListeners();
-        this.renderTemplates();
-        this.updateUIText();
-    }
-
-    setupEventListeners() {
-        // Pulsante Genera
-        document.getElementById('generate-btn')?.addEventListener('click', () => this.generateAutomation());
-        
-        // Pulsante Export
-        document.getElementById('export-btn')?.addEventListener('click', () => this.exportYAML());
-        
-        // Pulsante Valida
-        document.getElementById('validate-btn')?.addEventListener('click', () => this.validateYAML());
-        
-        // Tab navigation
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => this.switchTab(e.target.dataset.tab));
-        });
-        
-        // Template buttons
-        document.querySelectorAll('.template-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const prompt = btn.dataset.prompt;
-                document.getElementById('prompt-input').value = prompt;
-            });
-        });
-    }
-
-    switchTab(tabName) {
-        // Update active tab button
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.tab === tabName);
-        });
-        
-        // Update active tab content
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.toggle('active', content.id === `${tabName}-content`);
-        });
-        
-        this.currentTab = tabName;
-        
-        // Update flow diagram when switching to flow tab
-        if (tabName === 'flow') {
-            this.updateFlowDiagram();
-        }
+    get t() {
+        return this.translations[this.lang] || this.translations.en;
     }
 
     async generateAutomation() {
-        const prompt = document.getElementById('prompt-input')?.value;
-        
+        const prompt = this.shadowRoot.querySelector('#prompt-input')?.value;
+
         if (!prompt) {
-            this.showError('❌ Inserisci una descrizione');
+            this.showNotification(this.t.error + ' - ' + this.t.placeholder, 'error');
             return;
         }
-        
-        const btn = document.getElementById('generate-btn');
-        btn.disabled = true;
-        btn.textContent = '⏳ Generando...';
-        
+
+        this.isLoading = true;
+        this.requestUpdate();
+
         try {
             const result = await this.callWebSocket('ai_automation_builder/build_automation', {
                 prompt: prompt
             });
-            
+
             if (result.success) {
-                document.getElementById('yaml-output').textContent = result.yaml;
-                this.switchTab('yaml');
-                this.showSuccess('✅ Automazione generata!');
-                
-                // Auto-activate relevant flow nodes
-                this.updateFlowDiagram();
+                this.yamlOutput = result.yaml;
+                this.currentTab = 'yaml';
+                this.showNotification(this.t.success + ' - Automazione generata!', 'success');
+                this.requestUpdate();
             } else {
-                this.showError('❌ Errore generazione: ' + (result.error || 'Sconosciuto'));
+                this.showNotification(this.t.error + ': ' + (result.error || 'Unknown'), 'error');
             }
         } catch (error) {
-            this.showError('❌ Errore: ' + error.message);
+            this.showNotification(this.t.error + ': ' + error.message, 'error');
+            console.error('WebSocket error:', error);
         } finally {
-            btn.disabled = false;
-            btn.textContent = this.lang === 'it' ? '🧠 Genera Automazione' : '🧠 Generate Automation';
+            this.isLoading = false;
+            this.requestUpdate();
         }
     }
 
     async validateYAML() {
-        const yaml = document.getElementById('yaml-output')?.textContent;
-        
-        if (!yaml) {
-            this.showError('❌ Genera prima un\'automazione');
+        if (!this.yamlOutput) {
+            this.showNotification(this.t.error + ' - Genera prima un\'automazione', 'error');
             return;
         }
-        
+
         try {
             const result = await this.callWebSocket('ai_automation_builder/validate_yaml', {
-                yaml: yaml
+                yaml: this.yamlOutput
             });
-            
-            const validationDiv = document.getElementById('validation-result');
-            
-            if (result.valid) {
-                validationDiv.innerHTML = '<div class="valid">✅ YAML valido! Pronto per salvare.</div>';
-                this.switchTab('validate');
-            } else {
-                validationDiv.innerHTML = `<div class="error">❌ Errore: ${result.error}</div>`;
-                this.switchTab('validate');
-            }
+
+            this.validationResult = result;
+            this.currentTab = 'validate';
+            this.requestUpdate();
         } catch (error) {
-            this.showError('❌ Errore validazione: ' + error.message);
+            this.showNotification(this.t.error + ': ' + error.message, 'error');
         }
     }
 
     exportYAML() {
-        const yaml = document.getElementById('yaml-output')?.textContent;
-        
-        if (!yaml) {
-            this.showError('❌ Nulla da esportare');
+        if (!this.yamlOutput) {
+            this.showNotification(this.t.error + ' - Nulla da esportare', 'error');
             return;
         }
-        
-        // Copia negli appunti
-        navigator.clipboard.writeText(yaml).then(() => {
-            this.showSuccess('📋 Copiato negli appunti!');
-            
-            // Apri automazioni HA
+
+        navigator.clipboard.writeText(this.yamlOutput).then(() => {
+            this.showNotification('📋 Copiato negli appunti!', 'success');
             setTimeout(() => {
                 window.location.href = '/config/automation/dashboard';
-            }, 1500);
+            }, 1000);
         }).catch(() => {
-            this.showError('❌ Errore copia');
+            this.showNotification(this.t.error + ' - Copia fallita', 'error');
         });
     }
 
-    updateFlowDiagram() {
-        const nodes = document.querySelectorAll('.flow-node');
-        nodes.forEach((node, index) => {
-            node.classList.toggle('active', index < 3); // Primi 3 nodi attivi se YAML presente
-        });
+    setTemplate(prompt) {
+        const input = this.shadowRoot.querySelector('#prompt-input');
+        if (input) {
+            input.value = prompt;
+        }
     }
 
-    renderTemplates() {
-        const templatesContainer = document.querySelector('.templates');
-        const templates = this.templates[this.lang] || this.templates.en;
-        
-        templatesContainer.innerHTML = '';
-        Object.values(templates).forEach(template => {
-            const btn = document.createElement('button');
-            btn.className = 'template-btn';
-            btn.textContent = template.name;
-            btn.dataset.prompt = template.prompt;
-            btn.addEventListener('click', () => {
-                document.getElementById('prompt-input').value = template.prompt;
-                this.generateAutomation();
-            });
-            templatesContainer.appendChild(btn);
-        });
-    }
-
-    updateUIText() {
-        const texts = {
-            it: {
-                title: '🧠 AI Automation Builder',
-                status: 'Connesso',
-                prompt: 'Descrivi l\'automazione...',
-                generate: '🧠 Genera Automazione',
-                export: '📥 Esporta',
-                validate: '✅ Valida',
-                flow: '📊 Flow',
-                yaml: '📝 YAML',
-                validation: '✅ Validazione'
-            },
-            en: {
-                title: '🧠 AI Automation Builder',
-                status: 'Connected',
-                prompt: 'Describe your automation...',
-                generate: '🧠 Generate Automation',
-                export: '📥 Export',
-                validate: '✅ Validate',
-                flow: '📊 Flow',
-                yaml: '📝 YAML',
-                validation: '✅ Validation'
-            }
-        };
-        
-        const t = texts[this.lang] || texts.en;
-        
-        document.querySelector('.header h1').textContent = t.title;
-        document.querySelector('.status').textContent = t.status;
-        document.getElementById('prompt-input').placeholder = t.prompt;
+    switchTab(tab) {
+        this.currentTab = tab;
+        this.requestUpdate();
     }
 
     async callWebSocket(command, data = {}) {
         return new Promise((resolve, reject) => {
             const id = Math.random();
-            
-            this.hass.connection.addEventListener('message', (event) => {
+
+            const messageHandler = (event) => {
                 try {
                     const msg = JSON.parse(event.data);
                     if (msg.id === id) {
+                        this.hass.connection.removeEventListener('message', messageHandler);
                         if (msg.type === 'result') {
                             resolve(msg.result);
                         } else if (msg.type === 'error') {
@@ -224,53 +182,414 @@ class AIAutomationBuilder {
                         }
                     }
                 } catch (e) {
-                    // Ignore non-JSON messages
+                    // Ignore
                 }
-            });
-            
+            };
+
+            this.hass.connection.addEventListener('message', messageHandler);
+
             this.hass.connection.sendMessage({
                 id: id,
                 type: command,
                 ...data
             });
-            
-            // Timeout after 30s
+
             setTimeout(() => reject(new Error('Timeout')), 30000);
         });
     }
 
-    showSuccess(message) {
-        this.showNotification(message, 'success');
-    }
-
-    showError(message) {
-        this.showNotification(message, 'error');
-    }
-
     showNotification(message, type) {
-        const notifContainer = document.getElementById('notification') || this.createNotification();
-        notifContainer.textContent = message;
-        notifContainer.className = type === 'success' ? 'valid' : 'error';
-        notifContainer.style.display = 'block';
-        
-        setTimeout(() => {
-            notifContainer.style.display = 'none';
-        }, 3000);
+        // Usa HA toast notification
+        if (this.hass?.callService) {
+            this.hass.callService('persistent_notification', 'create', {
+                notification_id: 'ai_automation_builder',
+                message: message,
+                title: 'AI Automation Builder'
+            });
+        } else {
+            console.log(message);
+        }
     }
 
-    createNotification() {
-        const div = document.createElement('div');
-        div.id = 'notification';
-        div.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; padding: 16px; border-radius: 8px;';
-        document.body.appendChild(div);
-        return div;
+    render() {
+        return html`
+            <ha-card>
+                <div class="card-header">
+                    <div class="header-content">
+                        <h2>${this.t.title}</h2>
+                        <div class="status">${this.t.connected}</div>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <!-- Input Section -->
+                    <div class="input-section">
+                        <textarea
+                            id="prompt-input"
+                            placeholder="${this.t.placeholder}"
+                            ?disabled="${this.isLoading}"
+                        ></textarea>
+                        
+                        <div class="button-group">
+                            <button
+                                class="btn btn-primary"
+                                @click="${this.generateAutomation}"
+                                ?disabled="${this.isLoading}"
+                            >
+                                ${this.isLoading ? this.t.generating : this.t.generate}
+                            </button>
+                            <button
+                                class="btn btn-secondary"
+                                @click="${this.validateYAML}"
+                                ?disabled="${!this.yamlOutput}"
+                            >
+                                ${this.t.validate}
+                            </button>
+                            <button
+                                class="btn btn-secondary"
+                                @click="${this.exportYAML}"
+                                ?disabled="${!this.yamlOutput}"
+                            >
+                                ${this.t.export}
+                            </button>
+                        </div>
+
+                        <!-- Templates -->
+                        <div class="templates">
+                            <span class="templates-label">${this.t.templates}</span>
+                            <button class="template-btn" @click="${() => this.setTemplate('Accendi le luci del salotto alle 20:00')}">
+                                ${this.t.template1}
+                            </button>
+                            <button class="template-btn" @click="${() => this.setTemplate('Invia notifica se la porta si apre di notte')}">
+                                ${this.t.template2}
+                            </button>
+                            <button class="template-btn" @click="${() => this.setTemplate('Notificami quando la lavatrice ha finito')}">
+                                ${this.t.template3}
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <button
+                            class="tab-btn ${this.currentTab === 'flow' ? 'active' : ''}"
+                            @click="${() => this.switchTab('flow')}"
+                        >
+                            ${this.t.tabs.flow}
+                        </button>
+                        <button
+                            class="tab-btn ${this.currentTab === 'yaml' ? 'active' : ''}"
+                            @click="${() => this.switchTab('yaml')}"
+                        >
+                            ${this.t.tabs.yaml}
+                        </button>
+                        <button
+                            class="tab-btn ${this.currentTab === 'validate' ? 'active' : ''}"
+                            @click="${() => this.switchTab('validate')}"
+                        >
+                            ${this.t.tabs.validate}
+                        </button>
+                    </div>
+
+                    <!-- Tab Contents -->
+                    <div class="tab-contents">
+                        <!-- Flow Tab -->
+                        ${this.currentTab === 'flow' ? html`
+                            <div class="flow-diagram">
+                                <div class="flow-node ${this.yamlOutput ? 'active' : ''}">
+                                    <div>📝 Input</div>
+                                </div>
+                                <div class="flow-node ${this.yamlOutput ? 'active' : ''}">
+                                    <div>🤖 AI Process</div>
+                                </div>
+                                <div class="flow-node ${this.yamlOutput ? 'active' : ''}">
+                                    <div>✅ Validation</div>
+                                </div>
+                                <div class="flow-node">
+                                    <div>💾 Save</div>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        <!-- YAML Tab -->
+                        ${this.currentTab === 'yaml' ? html`
+                            <pre class="yaml-output">${this.yamlOutput || 'Genera un\'automazione per vedere il YAML...'}</pre>
+                        ` : ''}
+
+                        <!-- Validation Tab -->
+                        ${this.currentTab === 'validate' ? html`
+                            <div class="validation-section">
+                                ${this.validationResult ? html`
+                                    ${this.validationResult.valid ? html`
+                                        <div class="valid-message">✅ ${this.t.validYaml}</div>
+                                    ` : html`
+                                        <div class="error-message">
+                                            ${this.t.invalidYaml}
+                                            <br>${this.validationResult.error}
+                                        </div>
+                                    `}
+                                ` : html`
+                                    <p>Valida il YAML per vedere i risultati...</p>
+                                `}
+                            </div>
+                        ` : ''}
+                    </div>
+                </div>
+            </ha-card>
+        `;
+    }
+
+    static get styles() {
+        return css`
+            :host {
+                --primary-color: #00d4ff;
+                --accent-color: #ff6b35;
+                --bg-color: #0a0a0f;
+                --card-bg: #151520;
+                --text-color: #e0e0e0;
+            }
+
+            ha-card {
+                background: var(--card-bg);
+                color: var(--text-color);
+                border-radius: 16px;
+                padding: 0;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            }
+
+            .card-header {
+                padding: 24px;
+                border-bottom: 1px solid #333;
+            }
+
+            .header-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .card-header h2 {
+                margin: 0;
+                font-size: 24px;
+                background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            .status {
+                padding: 8px 16px;
+                border-radius: 20px;
+                background: #28a745;
+                font-size: 12px;
+                font-weight: bold;
+            }
+
+            .card-content {
+                padding: 24px;
+            }
+
+            .input-section textarea {
+                width: 100%;
+                height: 120px;
+                background: #1a1a25;
+                border: 2px solid #333;
+                border-radius: 12px;
+                padding: 16px;
+                color: var(--text-color);
+                font-family: monospace;
+                font-size: 14px;
+                resize: vertical;
+                margin-bottom: 16px;
+                box-sizing: border-box;
+            }
+
+            .input-section textarea:focus {
+                outline: none;
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+            }
+
+            .button-group {
+                display: flex;
+                gap: 12px;
+                margin-bottom: 16px;
+            }
+
+            .btn {
+                flex: 1;
+                padding: 12px 24px;
+                border: none;
+                border-radius: 25px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, var(--primary-color), #0099cc);
+                color: white;
+            }
+
+            .btn-primary:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+            }
+
+            .btn-secondary {
+                background: #333;
+                color: var(--text-color);
+            }
+
+            .btn-secondary:hover:not(:disabled) {
+                background: var(--accent-color);
+                transform: translateY(-2px);
+            }
+
+            .btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .templates {
+                display: flex;
+                gap: 12px;
+                flex-wrap: wrap;
+                align-items: center;
+                margin-top: 16px;
+            }
+
+            .templates-label {
+                font-size: 12px;
+                color: #888;
+                font-weight: bold;
+            }
+
+            .template-btn {
+                background: #333;
+                color: var(--text-color);
+                border: none;
+                padding: 8px 16px;
+                border-radius: 20px;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .template-btn:hover {
+                background: var(--accent-color);
+                transform: translateY(-1px);
+            }
+
+            .tabs {
+                display: flex;
+                gap: 8px;
+                margin: 24px 0;
+                border-radius: 12px;
+                padding: 4px;
+                background: #222;
+            }
+
+            .tab-btn {
+                flex: 1;
+                padding: 12px 16px;
+                border: none;
+                background: transparent;
+                color: #888;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            .tab-btn.active {
+                background: var(--primary-color);
+                color: white;
+            }
+
+            .flow-diagram {
+                display: flex;
+                gap: 16px;
+                padding: 24px;
+                background: linear-gradient(135deg, #1a1a25, #222);
+                border-radius: 16px;
+                justify-content: space-around;
+            }
+
+            .flow-node {
+                flex: 1;
+                padding: 20px;
+                text-align: center;
+                border-radius: 12px;
+                background: #2a2a3a;
+                opacity: 0.5;
+                transition: all 0.3s;
+            }
+
+            .flow-node.active {
+                background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+                opacity: 1;
+                transform: scale(1.05);
+                box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+            }
+
+            .yaml-output {
+                background: #1a1a25;
+                border: 1px solid #333;
+                border-radius: 8px;
+                padding: 16px;
+                font-family: monospace;
+                white-space: pre-wrap;
+                max-height: 400px;
+                overflow-y: auto;
+                margin: 0;
+                color: #00d4ff;
+            }
+
+            .validation-section {
+                padding: 16px;
+                border-radius: 8px;
+                background: #1a1a25;
+            }
+
+            .valid-message {
+                color: #28a745;
+                padding: 16px;
+                background: rgba(40, 167, 69, 0.1);
+                border-radius: 8px;
+                border-left: 4px solid #28a745;
+            }
+
+            .error-message {
+                color: #dc3545;
+                padding: 16px;
+                background: rgba(220, 53, 69, 0.1);
+                border-radius: 8px;
+                border-left: 4px solid #dc3545;
+                font-family: monospace;
+                white-space: pre-wrap;
+            }
+
+            @media (max-width: 768px) {
+                ha-card {
+                    border-radius: 8px;
+                }
+
+                .flow-diagram {
+                    flex-direction: column;
+                }
+
+                .button-group {
+                    flex-direction: column;
+                }
+
+                .btn {
+                    width: 100%;
+                }
+            }
+        `;
     }
 }
 
-// Inizializza quando disponibile
-window.AIAutomationBuilder = new AIAutomationBuilder();
+customElements.define('ai-automation-builder-card', AIAutomationBuilderCard);
 
-// Export per Home Assistant
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = AIAutomationBuilder;
-}

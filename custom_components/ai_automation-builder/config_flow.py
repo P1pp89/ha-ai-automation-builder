@@ -1,171 +1,70 @@
-"""Config Flow AI Automation Builder."""
-
+"""Config flow per AI Automation Builder."""
 from __future__ import annotations
 
-import socket
-import voluptuous as vol
-from typing import Any
+import logging
+from typing import Any, Dict, Optional
 
+import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
-from homeassistant.helpers import selector
+from homeassistant.helpers import config_validation as cv
 
-from .const import (
-    DOMAIN,
-    CONF_AI_PROVIDER,
-    CONF_AI_ENDPOINT,
-    CONF_AI_API_KEY,
-    CONF_AI_MODEL,
-    AI_PROVIDERS,
+from .const import DOMAIN
+
+_LOGGER = logging.getLogger(__name__)
+
+DATA_SCHEMA = vol.Schema(
+    {
+        vol.Required("ai_provider", default="ollama"): vol.In(
+            ["ollama", "openai", "custom"]
+        ),
+        vol.Required("ai_endpoint", default="http://homeassistant.local:11434"): cv.string,
+        vol.Optional("api_key", default=""): cv.string,
+        vol.Required("ai_model", default="phi3:mini"): cv.string,
+    }
 )
 
 
-class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
-    """Config Flow."""
+class AIAutomationBuilderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    """Config flow per AI Automation Builder."""
 
-    VERSION = 1
+    VERSION = 2
 
     async def async_step_user(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: Optional[Dict[str, Any]] = None
     ) -> FlowResult:
-        """Step utente."""
-        errors = {}
+        """Primo passo del setup."""
+        errors: Dict[str, str] = {}
+
+        # Verifica se già configurato
+        await self.async_set_unique_id(DOMAIN)
+        self._abort_if_unique_id_configured()
 
         if user_input is not None:
-            # Auto Install Ollama
-            if user_input.get("auto_install"):
-                from .websocket_api import install_ollama_addon
-                
-                # Mostra progress tramite log
-                import logging
-                _LOGGER = logging.getLogger(__name__)
-                _LOGGER.info("🔄 Installazione Ollama in corso...")
-                
-                result = await install_ollama_addon(self.hass)
-                
-                if result["success"]:
-                    data = {
-                        CONF_AI_PROVIDER: "ollama",
-                        CONF_AI_ENDPOINT: result["endpoint"],
-                        CONF_AI_MODEL: "phi3:mini",
-                    }
-                    
-                    _LOGGER.info(f"✅ {result['message']}")
-                    
-                    # Crea notifica persistente DOPO il setup
-                    self.hass.async_create_task(
-                        self.hass.services.async_call(
-                            "persistent_notification",
-                            "create",
-                            {
-                                "title": "Ollama Installato!",
-                                "message": f"✅ {result['message']}\n\nEndpoint: {result['endpoint']}",
-                                "notification_id": "ollama_success",
-                            },
-                        )
-                    )
-                    
-                    return self.async_create_entry(title="🧠 Ollama AI", data=data)
-                else:
-                    errors["base"] = "install_failed"
-                    _LOGGER.error(f"❌ {result['message']}")
-                    
-                    # Notifica errore
-                    self.hass.async_create_task(
-                        self.hass.services.async_call(
-                            "persistent_notification",
-                            "create",
-                            {
-                                "title": "Errore Installazione Ollama",
-                                "message": f"❌ {result['message']}\n\nUsa configurazione manuale o installa Ollama addon manualmente.",
-                                "notification_id": "ollama_error",
-                            },
-                        )
-                    )
-
-            # Configurazione manuale
-            else:
-                providers_dict = dict(AI_PROVIDERS)
-                provider_name = providers_dict.get(user_input[CONF_AI_PROVIDER], "AI")
-                title = f"{provider_name} AI"
-
-                return self.async_create_entry(title=title, data=user_input)
-
-        # Schema form
-        data_schema = vol.Schema(
-            {
-                vol.Optional("auto_install", default=False): bool,
-                vol.Required(CONF_AI_PROVIDER, default="ollama"): selector.SelectSelector(
-                    selector.SelectSelectorConfig(
-                        options=[
-                            selector.SelectOptionDict(value=k, label=v)
-                            for k, v in AI_PROVIDERS
-                        ],
-                        mode=selector.SelectSelectorMode.DROPDOWN,
-                    )
-                ),
-                vol.Required(CONF_AI_ENDPOINT, default="http://homeassistant.local:11434"): str,
-                vol.Optional(CONF_AI_API_KEY, default=""): str,
-                vol.Optional(CONF_AI_MODEL, default="phi3:mini"): str,
-            }
-        )
+            # Valida l'endpoint
+            endpoint = user_input.get("ai_endpoint", "").strip()
+            
+            if not endpoint:
+                errors["ai_endpoint"] = "Endpoint non può essere vuoto"
+            elif not (endpoint.startswith("http://") or endpoint.startswith("https://")):
+                errors["ai_endpoint"] = "Endpoint deve iniziare con http:// o https://"
+            
+            if not errors:
+                return self.async_create_entry(
+                    title="AI Automation Builder",
+                    data=user_input,
+                )
 
         return self.async_show_form(
-            step_id="user", 
-            data_schema=data_schema, 
+            step_id="user",
+            data_schema=DATA_SCHEMA,
             errors=errors,
             description_placeholders={
-                "info": "Spunta 'Auto Install' per installare automaticamente Ollama (richiede HA OS/Supervised)"
-            }
+                "ollama_info": "Installa Ollama da Impostazioni → Componenti aggiuntivi → Negozio. Cerca 'Ollama' e installalo.",
+            },
         )
 
-    def _get_local_ip(self) -> str:
-        """Get local IP."""
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        try:
-            s.connect(("8.8.8.8", 80))
-            ip = s.getsockname()[0]
-        except Exception:
-            ip = "127.0.0.1"
-        finally:
-            s.close()
-        return ip
-
-    @staticmethod
-    def async_get_options_flow(
-        config_entry: config_entries.ConfigEntry,
-    ) -> config_entries.OptionsFlow:
-        """Get options flow."""
-        return OptionsFlowHandler(config_entry)
-
-
-class OptionsFlowHandler(config_entries.OptionsFlow):
-    """Options flow."""
-
-    def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
-        """Init."""
-        self.config_entry = config_entry
-
-    async def async_step_init(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
-        """Init options."""
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
-
-        data_schema = vol.Schema(
-            {
-                vol.Required(
-                    CONF_AI_ENDPOINT,
-                    default=self.config_entry.data.get(CONF_AI_ENDPOINT, ""),
-                ): str,
-                vol.Optional(
-                    CONF_AI_MODEL,
-                    default=self.config_entry.data.get(CONF_AI_MODEL, "phi3:mini"),
-                ): str,
-            }
-        )
-
-        return self.async_show_form(step_id="init", data_schema=data_schema)
-
+    async def async_step_import(self, import_data: Dict[str, Any]) -> FlowResult:
+        """Importa configurazione da configuration.yaml (legacy)."""
+        return await self.async_step_user(import_data)

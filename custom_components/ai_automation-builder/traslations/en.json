@@ -1,0 +1,26 @@
+{
+  "title": "AI Automation Builder",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure AI",
+        "description": "Choose AI engine to generate automations",
+        "data": {
+          "auto_install": "🪄 Auto-install Ollama (free)"
+        }
+      }
+    }
+  },
+  "panel": {
+    "title": "🤖 AI Automation",
+    "generate": "🧠 Generate Automation",
+    "flow": "📊 Flow",
+    "yaml": "📝 YAML",
+    "validate": "✅ Validation",
+    "templates": {
+      "luci": "🌙 Night Lights",
+      "intrusione": "🚨 Intrusion",
+      "lavatrice": "🧺 Washing Machine"
+    }
+  }
+}

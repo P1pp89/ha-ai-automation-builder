@@ -1,0 +1,43 @@
+{
+  "config": [
+    {
+      "name": "AI Automation Builder",
+      "description": "Genera automazioni Home Assistant con intelligenza artificiale",
+      "url": "/config/ai_automation_builder"
+    }
+  ],
+  "options": [
+    {
+      "name": "AI Automation Builder",
+      "description": "Configura provider AI e opzioni avanzate",
+      "url": "/config/ai_automation_builder/options"
+    }
+  ],
+  "services": [
+    {
+      "service": "install_ollama",
+      "description": "Installa Ollama automaticamente",
+      "fields": {
+        "model": {
+          "name": "Modello",
+          "description": "Modello Ollama da scaricare",
+          "required": false,
+          "selector": {
+            "select": {
+              "options": [
+                "phi3:mini",
+                "llama3.1",
+                "mistral"
+              ],
+              "custom_value": true
+            }
+          }
+        }
+      }
+    },
+    {
+      "service": "restart_ai",
+      "description": "Riavvia servizio AI"
+    }
+  ]
+}

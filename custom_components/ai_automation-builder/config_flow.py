@@ -46,8 +46,8 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 return self.async_create_entry(title="🧠 Ollama Auto", data=data)
 
             return self.async_create_entry(
-                title=AI_PROVIDERS[user_input[CONF_AI_PROVIDER]],
-                data=user_input,
+                title=user_input[CONF_AI_PROVIDER].title() + " AI",
+                return self.async_create_entry(title=title, data=user_input),
             )
 
         data_schema = vol.Schema(
@@ -104,3 +104,4 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         return self.async_show_form(
             step_id="init", data_schema=schema, description_placeholders={}
         )
+

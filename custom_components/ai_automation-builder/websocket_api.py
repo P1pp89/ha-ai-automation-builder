@@ -27,7 +27,7 @@ async def call_ai(prompt: str, config: dict, hass: HomeAssistant) -> str:
     try:
         async with aiohttp.ClientSession() as session:
             payload = {
-                "model": config.get("ai_model", "llama3.1"),
+                "model": config.get("ai_model", "phi3:mini"),
                 "messages": [
                     {
                         "role": "system",
@@ -40,10 +40,15 @@ Riconosci entità dal prompt. Usa servizio/action standard HA."""
                 "temperature": 0.1,
             }
 
+            # FIX: Aggiungi /v1/chat/completions all'endpoint
+            endpoint = config.get("ai_endpoint", "http://localhost:11434")
+            if not endpoint.endswith("/v1"):
+                endpoint = f"{endpoint}/v1"
+            
             async with session.post(
-                config["ai_endpoint"] + "/chat/completions",
+                f"{endpoint}/chat/completions",
                 json=payload,
-                headers={"Authorization": f"Bearer {config.get('ai_api_key', '')}"},
+                headers={"Authorization": f"Bearer {config.get('api_key', '')}"},
             ) as resp:
                 data = await resp.json()
                 yaml_str = data["choices"][0]["message"]["content"]
@@ -212,6 +217,7 @@ async def async_setup_ws(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_build_automation)
     websocket_api.async_register_command(hass, ws_get_entities)
     websocket_api.async_register_command(hass, ws_validate_yaml)
+
 
 
 

@@ -1,43 +1,80 @@
 {
-  "config": [
-    {
-      "name": "AI Automation Builder",
-      "description": "Genera automazioni Home Assistant con intelligenza artificiale",
-      "url": "/config/ai_automation_builder"
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configura AI Automation Builder",
+        "description": "Scegli il provider AI. Per Ollama locale, spunta 'Auto Install'.",
+        "data": {
+          "auto_install": "🪄 Installa Ollama automaticamente",
+          "ai_provider": "Provider AI",
+          "ai_endpoint": "Endpoint API",
+          "api_key": "API Key (opzionale)",
+          "ai_model": "Modello AI"
+        }
+      }
+    },
+    "error": {
+      "install_failed": "Installazione automatica fallita. Installa manualmente l'addon Ollama.",
+      "cannot_connect": "Impossibile connettersi all'endpoint AI",
+      "unknown": "Errore sconosciuto"
+    },
+    "abort": {
+      "already_configured": "Integrazione già configurata"
     }
-  ],
-  "options": [
-    {
-      "name": "AI Automation Builder",
-      "description": "Configura provider AI e opzioni avanzate",
-      "url": "/config/ai_automation_builder/options"
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opzioni AI Automation Builder",
+        "data": {
+          "ai_endpoint": "Endpoint API",
+          "ai_model": "Modello AI"
+        }
+      }
     }
-  ],
-  "services": [
-    {
-      "service": "install_ollama",
+  },
+  "services": {
+    "install_ollama": {
+      "name": "Installa Ollama",
       "description": "Installa Ollama automaticamente",
       "fields": {
         "model": {
           "name": "Modello",
-          "description": "Modello Ollama da scaricare",
-          "required": false,
-          "selector": {
-            "select": {
-              "options": [
-                "phi3:mini",
-                "llama3.1",
-                "mistral"
-              ],
-              "custom_value": true
-            }
-          }
+          "description": "Modello Ollama da scaricare"
         }
       }
     },
-    {
-      "service": "restart_ai",
+    "restart_ai": {
+      "name": "Riavvia AI",
       "description": "Riavvia servizio AI"
+    },
+    "build_automation": {
+      "name": "Genera Automazione",
+      "description": "Genera automazione da descrizione naturale",
+      "fields": {
+        "prompt": {
+          "name": "Descrizione",
+          "description": "Descrivi l'automazione in italiano/inglese"
+        },
+        "language": {
+          "name": "Lingua",
+          "description": "it / en"
+        }
+      }
+    },
+    "get_entities_suggestions": {
+      "name": "Suggerimenti Entità",
+      "description": "Ottiene suggerimenti entità per automazioni"
+    },
+    "validate_yaml": {
+      "name": "Valida YAML",
+      "description": "Valida YAML automazione",
+      "fields": {
+        "yaml": {
+          "name": "YAML",
+          "description": "Codice YAML da validare"
+        }
+      }
     }
-  ]
+  }
 }

@@ -105,7 +105,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         mode=selector.SelectSelectorMode.DROPDOWN,
                     )
                 ),
-                vol.Required(CONF_AI_ENDPOINT, default="http://homeassistant.local:11434/v1"): str,
+                vol.Required(CONF_AI_ENDPOINT, default="http://homeassistant.local:11434"): str,
                 vol.Optional(CONF_AI_API_KEY, default=""): str,
                 vol.Optional(CONF_AI_MODEL, default="phi3:mini"): str,
             }
@@ -168,3 +168,4 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         )
 
         return self.async_show_form(step_id="init", data_schema=data_schema)
+

@@ -6,7 +6,8 @@
   "documentation": "https://github.com/P1pp89/ha-ai-automation-builder",
   "iot_class": "local_polling",
   "requirements": ["aiohttp", "pyyaml"],
-  "version": "2.1.8",
+  "version": "2.2.0",
   "homeassistant": "2026.1"
 }
+
 

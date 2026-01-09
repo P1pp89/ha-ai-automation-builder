@@ -7,10 +7,8 @@ import voluptuous as vol
 from typing import Any
 
 from homeassistant import config_entries
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
-from homeassistant.helpers import selector
 
 from .const import (
     DOMAIN,
@@ -42,22 +40,21 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     CONF_AI_ENDPOINT: endpoint,
                     CONF_AI_MODEL: "phi3:mini",
                 }
-                return self.async_create_entry(title="🧠 Ollama", data=data)
+                return self.async_create_entry(title="Ollama AI", data=data)
 
-            # ✅ FIX: Lookup corretto
+            # Configurazione manuale
             providers_dict = dict(AI_PROVIDERS)
             provider_name = providers_dict.get(user_input[CONF_AI_PROVIDER], "AI")
-            title = f"{provider_name}"
+            title = f"{provider_name} AI"
 
             return self.async_create_entry(title=title, data=user_input)
 
+        # Schema form
         data_schema = vol.Schema(
             {
-                vol.Optional("auto_install"): bool,
-                vol.Required(CONF_AI_PROVIDER): selector.SelectSelector(
-                    selector.SelectOptionDict(options=AI_PROVIDERS)
-                ),
-                vol.Required(CONF_AI_ENDPOINT): str,
+                vol.Optional("auto_install", default=False): bool,
+                vol.Required(CONF_AI_PROVIDER, default="ollama"): vol.In({k: v for k, v in AI_PROVIDERS}),
+                vol.Required(CONF_AI_ENDPOINT, default="http://localhost:11434/v1"): str,
                 vol.Optional(CONF_AI_API_KEY, default=""): str,
                 vol.Optional(CONF_AI_MODEL, default="phi3:mini"): str,
             }
@@ -78,40 +75,3 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         finally:
             s.close()
         return ip
-
-    @staticmethod
-    def async_get_options_flow(
-        config_entry: ConfigEntry,
-    ) -> config_entries.OptionsFlow:
-        """Get options flow."""
-        return OptionsFlowHandler(config_entry)
-
-
-class OptionsFlowHandler(config_entries.OptionsFlow):
-    """Options flow."""
-
-    def __init__(self, config_entry: ConfigEntry) -> None:
-        """Init."""
-        self.config_entry = config_entry
-
-    async def async_step_init(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
-        """Init options."""
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
-
-        data_schema = vol.Schema(
-            {
-                vol.Required(
-                    CONF_AI_ENDPOINT,
-                    default=self.config_entry.data.get(CONF_AI_ENDPOINT, ""),
-                ): str,
-                vol.Optional(
-                    CONF_AI_MODEL,
-                    default=self.config_entry.data.get(CONF_AI_MODEL, "phi3:mini"),
-                ): str,
-            }
-        )
-
-        return self.async_show_form(step_id="init", data_schema=data_schema)

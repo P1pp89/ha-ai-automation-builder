@@ -24,39 +24,83 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 async def call_ai(prompt: str, config: dict, hass: HomeAssistant) -> str:
-    """Chiama modello AI."""
+    """Chiama modello AI con supporto multiProvider."""
     try:
-        async with aiohttp.ClientSession() as session:
-            payload = {
-                "model": config.get("ai_model", "phi3:mini"),
-                "messages": [
+        provider = config.get("ai_provider", "groq")
+        model = config.get("ai_model")
+        
+        # Selezione endpoint e headers in base al provider
+        if provider == "ha_cloud":
+            # Home Assistant Cloud - usa il componente cloud integrato
+            try:
+                result = await hass.services.async_call(
+                    "cloud",
+                    "generate_text",
                     {
-                        "role": "system",
-                        "content": """Sei un esperto di Home Assistant. Genera SOLO YAML valido per automazioni.
-Formato: alias, trigger, condition (se necessario), action.
-Riconosci entità dal prompt. Usa servizio/action standard HA."""
+                        "prompt": prompt,
+                        "max_tokens": 1500,
                     },
-                    {"role": "user", "content": prompt},
-                ],
-                "temperature": 0.1,
-            }
+                    blocking=True,
+                    return_response=True,
+                )
+                return result.get("text", "# Errore: risposta vuota da HA Cloud")
+            except Exception as e:
+                _LOGGER.error("Errore HA Cloud: %s", e)
+                return f"# Errore HA Cloud: {str(e)}"
+        
+        # API esterne (GROQ, OpenAI, GitHub Models)
+        api_key = config.get("api_key")
+        
+        if provider == "groq":
+            endpoint = "https://api.groq.com/openai/v1/chat/completions"
+        elif provider == "openai":
+            endpoint = "https://api.openai.com/v1/chat/completions"
+        elif provider == "github_models":
+            endpoint = "https://models.inference.ai.azure.com/chat/completions"
+        else:
+            return "# Errore: Provider non riconosciuto"
+        
+        payload = {
+            "model": model,
+            "messages": [
+                {
+                    "role": "system",
+                    "content": """Sei un esperto di Home Assistant. Genera SOLO YAML valido per automazioni.
+Formato richiesto:
+- alias: Nome automazione
+  trigger: ...
+  condition: (opzionale)
+  action: ...
 
-            # FIX: Aggiungi /v1/chat/completions all'endpoint
-            endpoint = config.get("ai_endpoint", "http://localhost:11434")
-            if not endpoint.endswith("/v1"):
-                endpoint = f"{endpoint}/v1"
-            
+Riconosci automaticamente le entità dal prompt dell'utente.
+Usa solo servizi e azioni standard di Home Assistant.
+Non aggiungere commenti extra, solo YAML valido."""
+                },
+                {"role": "user", "content": prompt},
+            ],
+            "temperature": 0.1,
+            "max_tokens": 1500,
+        }
+        
+        async with aiohttp.ClientSession() as session:
             async with session.post(
-                f"{endpoint}/chat/completions",
+                endpoint,
                 json=payload,
-                headers={"Authorization": f"Bearer {config.get('api_key', '')}"},
+                headers={"Authorization": f"Bearer {api_key}"},
+                timeout=aiohttp.ClientTimeout(total=30),
             ) as resp:
+                if resp.status != 200:
+                    error_text = await resp.text()
+                    _LOGGER.error("Errore API %s: %s", resp.status, error_text)
+                    return f"# Errore {resp.status}: Verifica API Key e Provider"
+                
                 data = await resp.json()
                 yaml_str = data["choices"][0]["message"]["content"]
                 return yaml_str
+    
     except Exception as e:
-        _LOGGER.error("Errore AI: %s", e)
-        return "# Errore AI. Verifica endpoint e API key."
+        _LOGGER.error("Errore call_ai: %s", e)
+        return f"# Errore: {str(e)}\nVerifica API Key e connessione"
 
 @websocket_api.require_admin
 @websocket_api.websocket_command(
@@ -255,14 +299,3 @@ async def async_setup_ws(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_build_automation)
     websocket_api.async_register_command(hass, ws_get_entities)
     websocket_api.async_register_command(hass, ws_validate_yaml)
-
-
-
-
-
-
-
-
-
-
-

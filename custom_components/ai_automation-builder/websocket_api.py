@@ -123,9 +123,86 @@ async def ws_validate_yaml(
     except Exception as e:
         connection.send_result(msg["id"], {"valid": False, "error": str(e)})
 
+async def install_ollama_addon(hass: HomeAssistant) -> dict:
+    """Installa e configura addon Ollama."""
+    result = {"success": False, "message": "", "endpoint": ""}
+    
+    try:
+        # Verifica se Supervisor è disponibile
+        if not hasattr(hass.components, "hassio"):
+            result["message"] = "Home Assistant Supervisor non disponibile. Usa Home Assistant OS o Supervised."
+            return result
+        
+        # ID addon Ollama (Community addon)
+        addon_slug = "a0d7b954_ollama"
+        
+        _LOGGER.info("Installazione Ollama addon in corso...")
+        
+        # 1. Aggiungi repository community addons se non presente
+        try:
+            await hass.async_add_executor_job(
+                hass.components.hassio.async_create_backup,
+                {"name": "Pre-Ollama Install", "addons": []}
+            )
+        except Exception:
+            pass  # Backup opzionale
+        
+        # 2. Installa addon
+        try:
+            await hass.async_add_executor_job(
+                hass.components.hassio.async_install_addon,
+                addon_slug
+            )
+            _LOGGER.info("Ollama addon installato")
+        except Exception as e:
+            # Potrebbe essere già installato
+            _LOGGER.warning(f"Installazione addon: {e}")
+        
+        # 3. Configura addon (imposta modello predefinito)
+        addon_config = {
+            "model": "phi3:mini",
+            "keep_alive": "5m"
+        }
+        
+        try:
+            await hass.async_add_executor_job(
+                hass.components.hassio.async_set_addon_options,
+                addon_slug,
+                addon_config
+            )
+            _LOGGER.info("Ollama configurato")
+        except Exception as e:
+            _LOGGER.warning(f"Configurazione addon: {e}")
+        
+        # 4. Avvia addon
+        try:
+            await hass.async_add_executor_job(
+                hass.components.hassio.async_start_addon,
+                addon_slug
+            )
+            _LOGGER.info("Ollama avviato")
+            
+            # Attendi avvio (5 secondi)
+            await asyncio.sleep(5)
+            
+            result["success"] = True
+            result["message"] = "Ollama installato e avviato con successo!"
+            result["endpoint"] = "http://homeassistant.local:11434/v1"
+            
+        except Exception as e:
+            result["message"] = f"Errore avvio addon: {e}"
+            _LOGGER.error(result["message"])
+        
+    except Exception as e:
+        result["message"] = f"Errore installazione: {e}"
+        _LOGGER.error(result["message"])
+    
+    return result
+
 async def async_setup_ws(hass: HomeAssistant) -> None:
     """Registra WS API."""
     websocket_api.async_register_command(hass, ws_build_automation)
     websocket_api.async_register_command(hass, ws_get_entities)
     websocket_api.async_register_command(hass, ws_validate_yaml)
+
 

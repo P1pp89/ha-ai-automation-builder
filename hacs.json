@@ -3,8 +3,5 @@
   "content_in_root": false,
   "homeassistant": "2024.1.0",
   "domains": ["ai_automation_builder"],
-  "render_readme": true,
-  "zip_release": true,
-  "country": ["IT", "US"],
-  "iot_class": "local_poll"
+  "render_readme": true
 }

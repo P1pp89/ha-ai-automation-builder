@@ -156,7 +156,7 @@ async def install_ollama_addon(hass: HomeAssistant) -> dict:
                 
                 result["success"] = True
                 result["message"] = "Ollama già installato e configurato!"
-                result["endpoint"] = "http://homeassistant.local:11434/v1"
+                result["endpoint"] = "http://homeassistant.local:11434"
                 return result
                 
         except Exception as e:
@@ -182,7 +182,7 @@ async def install_ollama_addon(hass: HomeAssistant) -> dict:
             
             result["success"] = True
             result["message"] = "Ollama installato e avviato! Il primo avvio può richiedere 1-2 minuti per scaricare il modello."
-            result["endpoint"] = "http://homeassistant.local:11434/v1"
+            result["endpoint"] = "http://homeassistant.local:11434"
             
         except Exception as e:
             result["message"] = f"Addon installato ma errore avvio: {e}. Avvialo manualmente da Impostazioni → Componenti aggiuntivi."
@@ -212,6 +212,7 @@ async def async_setup_ws(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_build_automation)
     websocket_api.async_register_command(hass, ws_get_entities)
     websocket_api.async_register_command(hass, ws_validate_yaml)
+
 
 
 

@@ -9,6 +9,7 @@ from typing import Any
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
+from homeassistant.helpers import selector
 
 from .const import (
     DOMAIN,
@@ -36,17 +37,12 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if user_input.get("auto_install"):
                 from .websocket_api import install_ollama_addon
                 
-                # Mostra progress
-                self.hass.components.persistent_notification.async_create(
-                    "🔄 Installazione Ollama in corso... Attendi 1-2 minuti",
-                    title="AI Automation Builder",
-                    notification_id="ollama_install"
-                )
+                # Mostra progress tramite log
+                import logging
+                _LOGGER = logging.getLogger(__name__)
+                _LOGGER.info("🔄 Installazione Ollama in corso...")
                 
                 result = await install_ollama_addon(self.hass)
-                
-                # Rimuovi notifica
-                self.hass.components.persistent_notification.async_dismiss("ollama_install")
                 
                 if result["success"]:
                     data = {
@@ -55,20 +51,37 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         CONF_AI_MODEL: "phi3:mini",
                     }
                     
-                    # Notifica successo
-                    self.hass.components.persistent_notification.async_create(
-                        f"✅ {result['message']}\n\nEndpoint: {result['endpoint']}",
-                        title="Ollama Installato!",
-                        notification_id="ollama_success"
+                    _LOGGER.info(f"✅ {result['message']}")
+                    
+                    # Crea notifica persistente DOPO il setup
+                    self.hass.async_create_task(
+                        self.hass.services.async_call(
+                            "persistent_notification",
+                            "create",
+                            {
+                                "title": "Ollama Installato!",
+                                "message": f"✅ {result['message']}\n\nEndpoint: {result['endpoint']}",
+                                "notification_id": "ollama_success",
+                            },
+                        )
                     )
                     
                     return self.async_create_entry(title="🧠 Ollama AI", data=data)
                 else:
                     errors["base"] = "install_failed"
-                    self.hass.components.persistent_notification.async_create(
-                        f"❌ {result['message']}\n\nInstalla manualmente da Impostazioni → Componenti aggiuntivi",
-                        title="Errore Installazione Ollama",
-                        notification_id="ollama_error"
+                    _LOGGER.error(f"❌ {result['message']}")
+                    
+                    # Notifica errore
+                    self.hass.async_create_task(
+                        self.hass.services.async_call(
+                            "persistent_notification",
+                            "create",
+                            {
+                                "title": "Errore Installazione Ollama",
+                                "message": f"❌ {result['message']}\n\nUsa configurazione manuale o installa Ollama addon manualmente.",
+                                "notification_id": "ollama_error",
+                            },
+                        )
                     )
 
             # Configurazione manuale
@@ -79,9 +92,7 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
                 return self.async_create_entry(title=title, data=user_input)
 
-        # Schema form - FIX: usa SelectSelector
-        from homeassistant.helpers import selector
-        
+        # Schema form
         data_schema = vol.Schema(
             {
                 vol.Optional("auto_install", default=False): bool,
@@ -103,7 +114,10 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="user", 
             data_schema=data_schema, 
-            errors=errors
+            errors=errors,
+            description_placeholders={
+                "info": "Spunta 'Auto Install' per installare automaticamente Ollama (richiede HA OS/Supervised)"
+            }
         )
 
     def _get_local_ip(self) -> str:

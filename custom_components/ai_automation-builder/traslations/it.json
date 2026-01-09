@@ -1,44 +1,25 @@
 {
-  "title": "AI Automation Builder",
   "config": {
     "step": {
       "user": {
-        "title": "Configura AI",
-        "description": "Scegli motore AI per generare automazioni",
+        "title": "Configura AI Automation Builder",
+        "description": "Prima installa Ollama da Componenti aggiuntivi, poi inserisci l'endpoint.",
         "data": {
-          "auto_install": "🪄 Installa Ollama automaticamente (gratis)"
+          "ai_provider": "Provider AI",
+          "ai_endpoint": "Endpoint API",
+          "api_key": "API Key (opzionale)",
+          "ai_model": "Modello AI"
         }
       }
     },
     "error": {
-      "cannot_connect": "Impossibile connettersi all'AI",
-      "invalid_auth": "Credenziali non valide"
+      "cannot_connect": "Impossibile connettersi all'endpoint. Ollama è avviato?",
+      "invalid_endpoint": "Endpoint non valido (http:// o https://)",
+      "unknown": "Errore sconosciuto"
     },
     "abort": {
-      "single_instance_allowed": "Già configurata"
-    }
-  },
-  "options": {
-    "step": {
-      "init": {
-        "title": "Opzioni AI",
-        "data": {
-          "endpoint": "Endpoint AI",
-          "model": "Modello"
-        }
-      }
-    }
-  },
-  "panel": {
-    "title": "🤖 AI Automazioni",
-    "generate": "🧠 Genera Automazione",
-    "flow": "📊 Flow",
-    "yaml": "📝 YAML",
-    "validate": "✅ Validazione",
-    "templates": {
-      "luci": "🌙 Luci notturne",
-      "intrusione": "🚨 Antintrusione",
-      "lavatrice": "🧺 Lavatrice finita"
+      "already_configured": "Già configurata"
     }
   }
 }
+

@@ -145,17 +145,27 @@ async def install_ollama_addon(hass: HomeAssistant) -> dict:
         
         _LOGGER.info("Tentativo installazione Ollama addon...")
         
-        # Usa hassio API via websocket
         try:
-            # 1. Verifica se addon è già installato
-            addons_info = await hass.components.hassio.async_get_addon_info(addon_slug)
+            # 1. Verifica se addon è già installato usando il servizio hassio
+            addon_info = await hass.services.async_call(
+                "hassio",
+                "addon_info",
+                {"addon": addon_slug},
+                blocking=True,
+                return_response=True,
+            )
             
-            if addons_info:
+            if addon_info:
                 _LOGGER.info("Ollama addon già installato, verifico stato...")
                 
                 # Se non è avviato, avvialo
-                if addons_info.get("state") != "started":
-                    await hass.components.hassio.async_start_addon(addon_slug)
+                if addon_info.get("state") != "started":
+                    await hass.services.async_call(
+                        "hassio",
+                        "addon_start",
+                        {"addon": addon_slug},
+                        blocking=True,
+                    )
                     _LOGGER.info("Ollama addon avviato")
                     await asyncio.sleep(3)
                 
@@ -169,7 +179,12 @@ async def install_ollama_addon(hass: HomeAssistant) -> dict:
         
         # 2. Installa addon se non presente
         try:
-            await hass.components.hassio.async_install_addon(addon_slug)
+            await hass.services.async_call(
+                "hassio",
+                "addon_install",
+                {"addon": addon_slug},
+                blocking=True,
+            )
             _LOGGER.info("Ollama addon installato con successo")
             await asyncio.sleep(2)
         except Exception as e:
@@ -179,7 +194,12 @@ async def install_ollama_addon(hass: HomeAssistant) -> dict:
         
         # 3. Avvia addon
         try:
-            await hass.components.hassio.async_start_addon(addon_slug)
+            await hass.services.async_call(
+                "hassio",
+                "addon_start",
+                {"addon": addon_slug},
+                blocking=True,
+            )
             _LOGGER.info("Ollama addon avviato")
             
             # Attendi che si avvii
@@ -217,6 +237,7 @@ async def async_setup_ws(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_build_automation)
     websocket_api.async_register_command(hass, ws_get_entities)
     websocket_api.async_register_command(hass, ws_validate_yaml)
+
 
 
 

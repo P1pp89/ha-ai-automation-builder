@@ -1,35 +1,78 @@
 # 🧠 Home Assistant AI Automation Builder
 
-**Describe in natural language → Perfect YAML automations!** 🇮🇹🇺🇸
+**Transform natural language into perfect YAML automations powered by AI!**
 
-[![HACS](https://img.shields.io/badge/HACS-Custom%20Integration-blue.svg)](https://github.com/P1pp89/ha-ai-automation-builder)
+Generate Home Assistant automations by simply describing what you want in English or Italian. No YAML knowledge required.
 
 ## ✨ Features
 
-🧠 **AI-Powered** - Natural language to YAML  
-🎨 **Visual Flow** - Trigger → Conditions → Actions diagram  
-✅ **Real-time Validation** - Errors before save  
-🔍 **Entity Recognition** - Auto-detects HA entities  
-📥 **YAML Export** - Ready for HA automations.yaml  
-🌐 **Multi-language** - Italian + English  
-🪄 **Ollama 1-click** - Free local AI setup
+- 🎯 **Natural Language to YAML** - Describe your automation, AI generates the YAML
+- 🤖 **Multiple AI Providers** - GROQ (free), OpenAI, Home Assistant Cloud, GitHub Models
+- ⚡ **Ultra-Fast** - Instant automation generation with GROQ
+- 🔒 **Secure** - API keys stored safely in HA secrets
+- 🌍 **Multi-language** - English & Italian support
+- 📋 **Real-time Validation** - Catch YAML errors before saving
+- 🎨 **Visual Interface** - Beautiful Lovelace cards for easy automation building
+- 🔗 **Entity Recognition** - AI automatically detects your Home Assistant entities
 
-## 📦 Installation Guide
+## 🚀 Quick Start
 
-### **Method 1: HACS (Recommended)**
+### Installation
 
-HACS → Integrations → ⋮ → Custom repositories
-Repository: https://github.com/P1pp89/ha-ai-automation-builder
-Category: Integration → Add
-Search "AI Automation Builder" → Install
-Restart Home Assistant
+1. **Using HACS (Recommended)**
+   - Add repository: `https://github.com/P1pp89/ha-ai-automation-builder`
+   - Search for "AI Automation Builder"
+   - Click Install
+   - Restart Home Assistant
 
-### **Method 2: Manual**
-Download: https://github.com/P1pp89/ha-ai-automation-builder/archive/refs/heads/main.zip
-Extract to: config/custom_components/ai_automation_builder/
-Restart Home Assistant
+2. **Manual Installation**
+   - Download and extract to `custom_components/ai_automation_builder`
+   - Restart Home Assistant
 
-## ⚙️ First Setup
-Settings → Devices & Services → + Add Integration
-→ "AI Automation Builder" → 🪄 "Install Ollama Auto"
-→ Wait 2min → Sidebar 🤖 AI Automation!
+### Configuration
+
+1. Go to **Settings → Devices & Services → Create Integration**
+2. Search for **"AI Automation Builder"**
+3. Choose your AI Provider:
+   - **GROQ** (Recommended - Free, Fast)
+     - Sign up: https://console.groq.com
+     - Generate API Key
+     - Use model: `mixtral-8x7b-32768`
+   - **Home Assistant Cloud** (If subscribed)
+   - **OpenAI** (Paid, Very Powerful)
+   - **GitHub Models** (Free with GitHub account)
+
+## 📖 Usage
+
+### In Home Assistant
+
+1. Open your dashboard
+2. Find "AI Automation Builder" in sidebar
+3. Enter your automation description:
+   - "Turn on living room lights when I arrive home"
+   - "Send notification if temperature drops below 15°C"
+   - "Turn off all lights at 11 PM"
+4. AI generates YAML instantly
+5. Review, validate, and save
+
+### WebSocket API
+
+For developers, use the WebSocket API:
+
+```javascript
+// Build automation
+{
+  "type": "ai_automation_builder/build_automation",
+  "prompt": "Turn on lights when motion detected"
+}
+
+// Get entities
+{
+  "type": "ai_automation_builder/get_entities"
+}
+
+// Validate YAML
+{
+  "type": "ai_automation_builder/validate_yaml",
+  "yaml": "alias: My Automation\ntrigger:\n  platform: state"
+}

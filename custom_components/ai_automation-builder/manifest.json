@@ -7,7 +7,7 @@
   "config_flow": true,
   "documentation": "https://github.com/P1pp89/ha-ai-automation-builder",
   "iot_class": "local_poll",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "requirements": ["aiohttp>=3.8.0"],
   "panel_custom": [{
     "name": "ai_automation_builder_panel",
@@ -20,5 +20,6 @@
     "module_url": "/ai_automation_builder/panel/frontend.js"
   }]
 }
+
 
 

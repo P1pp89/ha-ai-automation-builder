@@ -3,6 +3,7 @@
 import aiohttp
 import yaml
 import logging
+import voluptuous as vol
 from typing import Any, Dict
 
 from homeassistant.core import HomeAssistant
@@ -127,3 +128,4 @@ async def async_setup_ws(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_build_automation)
     websocket_api.async_register_command(hass, ws_get_entities)
     websocket_api.async_register_command(hass, ws_validate_yaml)
+

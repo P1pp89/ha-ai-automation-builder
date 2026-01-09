@@ -1,10 +1,9 @@
 """WebSocket API per AI Automation Builder."""
+from __future__ import annotations
 
-import os
 import aiohttp
 import yaml
 import logging
-import asyncio
 import voluptuous as vol
 from typing import Any, Dict
 
@@ -12,7 +11,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.components import websocket_api
 from homeassistant.helpers import config_validation as cv
 from homeassistant.const import CONF_TYPE
-from homeassistant.util.yaml import dump
 
 from .const import (
     DOMAIN,
@@ -23,15 +21,15 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
+
 async def call_ai(prompt: str, config: dict, hass: HomeAssistant) -> str:
     """Chiama modello AI con supporto multiProvider."""
     try:
         provider = config.get("ai_provider", "groq")
         model = config.get("ai_model")
         
-        # Selezione endpoint e headers in base al provider
+        # Home Assistant Cloud
         if provider == "ha_cloud":
-            # Home Assistant Cloud - usa il componente cloud integrato
             try:
                 result = await hass.services.async_call(
                     "cloud",
@@ -50,6 +48,9 @@ async def call_ai(prompt: str, config: dict, hass: HomeAssistant) -> str:
         
         # API esterne (GROQ, OpenAI, GitHub Models)
         api_key = config.get("api_key")
+        
+        if not api_key:
+            return "# Errore: API Key non configurata"
         
         if provider == "groq":
             endpoint = "https://api.groq.com/openai/v1/chat/completions"
@@ -102,6 +103,7 @@ Non aggiungere commenti extra, solo YAML valido."""
         _LOGGER.error("Errore call_ai: %s", e)
         return f"# Errore: {str(e)}\nVerifica API Key e connessione"
 
+
 @websocket_api.require_admin
 @websocket_api.websocket_command(
     {
@@ -115,15 +117,19 @@ async def ws_build_automation(
     connection: websocket_api.ActiveConnection,
     msg: Dict[str, Any],
 ) -> None:
-    """Genera automazione."""
-    config = hass.data[DOMAIN][list(hass.data[DOMAIN].keys())[0]]
-    
-    yaml_code = await call_ai(msg["prompt"], config, hass)
-    
-    connection.send_result(
-        msg["id"],
-        {"success": True, "yaml": yaml_code}
-    )
+    """Genera automazione da prompt."""
+    try:
+        config = hass.data[DOMAIN][list(hass.data[DOMAIN].keys())[0]]
+        yaml_code = await call_ai(msg["prompt"], config, hass)
+        
+        connection.send_result(
+            msg["id"],
+            {"success": True, "yaml": yaml_code}
+        )
+    except Exception as e:
+        _LOGGER.error("Errore ws_build_automation: %s", e)
+        connection.send_error(msg["id"], "internal_error", str(e))
+
 
 @websocket_api.require_admin
 @websocket_api.websocket_command(
@@ -135,19 +141,24 @@ async def ws_get_entities(
     connection: websocket_api.ActiveConnection,
     msg: Dict[str, Any],
 ) -> None:
-    """Lista entità HA."""
-    entities = {}
-    for state in hass.states.async_all():
-        domain = state.domain
-        if domain not in entities:
-            entities[domain] = []
-        entities[domain].append({
-            "id": state.entity_id,
-            "name": state.name or state.entity_id,
-            "state": state.state,
-        })
-    
-    connection.send_result(msg["id"], {"entities": entities})
+    """Restituisce lista di tutte le entità HA."""
+    try:
+        entities = {}
+        for state in hass.states.async_all():
+            domain = state.domain
+            if domain not in entities:
+                entities[domain] = []
+            entities[domain].append({
+                "id": state.entity_id,
+                "name": state.name or state.entity_id,
+                "state": state.state,
+            })
+        
+        connection.send_result(msg["id"], {"entities": entities})
+    except Exception as e:
+        _LOGGER.error("Errore ws_get_entities: %s", e)
+        connection.send_error(msg["id"], "internal_error", str(e))
+
 
 @websocket_api.require_admin
 @websocket_api.websocket_command(
@@ -162,140 +173,45 @@ async def ws_validate_yaml(
     connection: websocket_api.ActiveConnection,
     msg: Dict[str, Any],
 ) -> None:
-    """Valida YAML."""
+    """Valida YAML di un'automazione."""
     try:
-        data = yaml.safe_load(msg["yaml"])
-        # Validazione semplificata
+        yaml_content = msg["yaml"]
+        data = yaml.safe_load(yaml_content)
+        
+        # Validazione base
+        if not isinstance(data, dict):
+            raise ValueError("YAML deve essere un dizionario")
+        
         if "alias" not in data:
-            raise ValueError("Manca 'alias'")
+            raise ValueError("Manca il campo 'alias'")
+        
         if "trigger" not in data:
-            raise ValueError("Manca 'trigger'")
+            raise ValueError("Manca il campo 'trigger'")
+        
         connection.send_result(msg["id"], {"valid": True})
+    
+    except yaml.YAMLError as e:
+        connection.send_result(
+            msg["id"],
+            {"valid": False, "error": f"Errore YAML: {str(e)}"}
+        )
+    except ValueError as e:
+        connection.send_result(
+            msg["id"],
+            {"valid": False, "error": str(e)}
+        )
     except Exception as e:
-        connection.send_result(msg["id"], {"valid": False, "error": str(e)})
+        _LOGGER.error("Errore ws_validate_yaml: %s", e)
+        connection.send_result(
+            msg["id"],
+            {"valid": False, "error": f"Errore inatteso: {str(e)}"}
+        )
 
-async def install_ollama_addon(hass: HomeAssistant) -> dict:
-    """Installa e configura addon Ollama."""
-    result = {"success": False, "message": "", "endpoint": ""}
-    
-    try:
-        # Verifica se è Home Assistant OS/Supervised
-        if "hassio" not in hass.data:
-            result["message"] = "Richiede Home Assistant OS o Supervised. Usa configurazione manuale."
-            _LOGGER.warning(result["message"])
-            return result
-        
-        addon_slug = "a0d7b954_ollama"
-        _LOGGER.info("Tentativo installazione Ollama addon...")
-        
-        try:
-            # Usa il nuovo endpoint deprecato
-            addon_info = await hass.services.async_call(
-                "hassio",
-                "addon_info",
-                {"addon": addon_slug},
-                blocking=True,
-                return_response=True,
-            )
-            
-            if addon_info and addon_info.get("installed"):
-                _LOGGER.info("Ollama addon già installato, verifico stato...")
-                
-                if addon_info.get("state") != "started":
-                    await hass.services.async_call(
-                        "hassio",
-                        "addon_start",
-                        {"addon": addon_slug},
-                        blocking=True,
-                    )
-                    _LOGGER.info("Ollama addon avviato")
-                    await asyncio.sleep(3)
-                
-                result["success"] = True
-                result["message"] = "Ollama già installato e configurato!"
-                result["endpoint"] = "http://homeassistant.local:11434"
-                return result
-        
-        except Exception as e:
-            _LOGGER.debug(f"Addon non trovato, procedo con installazione: {e}")
-        
-        # NUOVO CODICE: Usa l'API REST diretto al Supervisor
-        try:
-            import aiohttp
-            
-            supervisor_token = os.getenv("SUPERVISOR_TOKEN")
-            if not supervisor_token:
-                result["message"] = "SUPERVISOR_TOKEN non disponibile. Usa endpoint manuale."
-                _LOGGER.error(result["message"])
-                return result
-            
-            async with aiohttp.ClientSession() as session:
-                headers = {
-                    "Authorization": f"Bearer {supervisor_token}",
-                    "Content-Type": "application/json",
-                }
-                
-                # Installa addon usando il nuovo endpoint
-                async with session.post(
-                    f"http://supervisor/api/store/addons/{addon_slug}/install",
-                    headers=headers,
-                    json={"background": False},
-                ) as resp:
-                    if resp.status == 200:
-                        _LOGGER.info("Ollama addon installato con successo")
-                        await asyncio.sleep(2)
-                    else:
-                        result["message"] = f"Errore installazione (HTTP {resp.status}). Installa manualmente da Impostazioni → Componenti aggiuntivi."
-                        _LOGGER.error(result["message"])
-                        return result
-        
-        except Exception as e:
-            result["message"] = f"Errore installazione: {e}. Installa manualmente l'addon 'Ollama' dai Componenti aggiuntivi."
-            _LOGGER.error(result["message"])
-            return result
-        
-        # Avvia addon
-        try:
-            await hass.services.async_call(
-                "hassio",
-                "addon_start",
-                {"addon": addon_slug},
-                blocking=True,
-            )
-            
-            _LOGGER.info("Ollama addon avviato")
-            await asyncio.sleep(5)
-            
-            result["success"] = True
-            result["message"] = "Ollama installato e avviato! Il primo avvio può richiedere 1-2 minuti per scaricare il modello."
-            result["endpoint"] = "http://homeassistant.local:11434"
-        
-        except Exception as e:
-            result["message"] = f"Addon installato ma errore avvio: {e}. Avvialo manualmente da Impostazioni → Componenti aggiuntivi."
-            _LOGGER.error(result["message"])
-    
-    except Exception as e:
-        result["message"] = f"Errore generale: {str(e)}"
-        _LOGGER.error(f"Errore install_ollama_addon: {e}", exc_info=True)
-    
-    return result
-
-
-def _get_local_ip_sync() -> str:
-    """Get local IP sync version."""
-    import socket
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()[0]
-    except Exception:
-        ip = "127.0.0.1"
-    finally:
-        s.close()
-    return ip
 
 async def async_setup_ws(hass: HomeAssistant) -> None:
-    """Registra WS API."""
+    """Registra i comandi WebSocket API."""
     websocket_api.async_register_command(hass, ws_build_automation)
     websocket_api.async_register_command(hass, ws_get_entities)
     websocket_api.async_register_command(hass, ws_validate_yaml)
+    _LOGGER.info("WebSocket API registrata per AI Automation Builder")
+

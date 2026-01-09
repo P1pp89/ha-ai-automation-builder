@@ -1,5 +1,6 @@
 """WebSocket API per AI Automation Builder."""
 
+import os
 import aiohttp
 import yaml
 import logging
@@ -254,6 +255,7 @@ async def async_setup_ws(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_build_automation)
     websocket_api.async_register_command(hass, ws_get_entities)
     websocket_api.async_register_command(hass, ws_validate_yaml)
+
 
 
 

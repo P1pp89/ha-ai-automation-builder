@@ -125,47 +125,74 @@ async def ws_validate_yaml(
         connection.send_result(msg["id"], {"valid": False, "error": str(e)})
 
 async def install_ollama_addon(hass: HomeAssistant) -> dict:
-    """Verifica disponibilità Ollama e configura endpoint."""
+    """Installa e configura addon Ollama."""
     result = {"success": False, "message": "", "endpoint": ""}
     
     try:
-        # Prova a connettersi a Ollama locale
-        import aiohttp
+        # Verifica se è Home Assistant OS/Supervised
+        if "hassio" not in hass.data:
+            result["message"] = "Richiede Home Assistant OS o Supervised. Usa configurazione manuale."
+            _LOGGER.warning(result["message"])
+            return result
         
-        endpoints_to_try = [
-            "http://homeassistant.local:11434",
-            "http://localhost:11434",
-            f"http://{_get_local_ip_sync()}:11434"
-        ]
+        # Slug addon Ollama ufficiale community
+        addon_slug = "a0d7b954_ollama"
         
-        async with aiohttp.ClientSession() as session:
-            for endpoint in endpoints_to_try:
-                try:
-                    _LOGGER.info(f"Provo endpoint: {endpoint}")
-                    async with session.get(f"{endpoint}/api/tags", timeout=aiohttp.ClientTimeout(total=5)) as resp:
-                        if resp.status == 200:
-                            result["success"] = True
-                            result["message"] = f"Ollama trovato su {endpoint}!"
-                            result["endpoint"] = f"{endpoint}/v1"
-                            _LOGGER.info(result["message"])
-                            return result
-                except Exception as e:
-                    _LOGGER.debug(f"Endpoint {endpoint} non disponibile: {e}")
-                    continue
+        _LOGGER.info("Tentativo installazione Ollama addon...")
         
-        # Se arriviamo qui, Ollama non è stato trovato
-        result["message"] = """Ollama non trovato. 
+        # Usa hassio API via websocket
+        try:
+            # 1. Verifica se addon è già installato
+            addons_info = await hass.components.hassio.async_get_addon_info(addon_slug)
+            
+            if addons_info:
+                _LOGGER.info("Ollama addon già installato, verifico stato...")
+                
+                # Se non è avviato, avvialo
+                if addons_info.get("state") != "started":
+                    await hass.components.hassio.async_start_addon(addon_slug)
+                    _LOGGER.info("Ollama addon avviato")
+                    await asyncio.sleep(3)
+                
+                result["success"] = True
+                result["message"] = "Ollama già installato e configurato!"
+                result["endpoint"] = "http://homeassistant.local:11434/v1"
+                return result
+                
+        except Exception as e:
+            _LOGGER.info(f"Addon non trovato, procedo con installazione: {e}")
         
-Opzioni:
-1. Installa l'addon 'Ollama' da Impostazioni → Componenti aggiuntivi → Archivio componenti aggiuntivi
-2. Oppure usa configurazione manuale con OpenAI/Groq"""
+        # 2. Installa addon se non presente
+        try:
+            await hass.components.hassio.async_install_addon(addon_slug)
+            _LOGGER.info("Ollama addon installato con successo")
+            await asyncio.sleep(2)
+        except Exception as e:
+            result["message"] = f"Errore installazione: {e}. Installa manualmente l'addon 'Ollama' dai Componenti aggiuntivi."
+            _LOGGER.error(result["message"])
+            return result
+        
+        # 3. Avvia addon
+        try:
+            await hass.components.hassio.async_start_addon(addon_slug)
+            _LOGGER.info("Ollama addon avviato")
+            
+            # Attendi che si avvii
+            await asyncio.sleep(5)
+            
+            result["success"] = True
+            result["message"] = "Ollama installato e avviato! Il primo avvio può richiedere 1-2 minuti per scaricare il modello."
+            result["endpoint"] = "http://homeassistant.local:11434/v1"
+            
+        except Exception as e:
+            result["message"] = f"Addon installato ma errore avvio: {e}. Avvialo manualmente da Impostazioni → Componenti aggiuntivi."
+            _LOGGER.error(result["message"])
         
     except Exception as e:
-        result["message"] = f"Errore verifica: {str(e)}"
+        result["message"] = f"Errore generale: {str(e)}"
         _LOGGER.error(f"Errore install_ollama_addon: {e}", exc_info=True)
     
     return result
-
 
 def _get_local_ip_sync() -> str:
     """Get local IP sync version."""
@@ -185,6 +212,7 @@ async def async_setup_ws(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_build_automation)
     websocket_api.async_register_command(hass, ws_get_entities)
     websocket_api.async_register_command(hass, ws_validate_yaml)
+
 
 
 

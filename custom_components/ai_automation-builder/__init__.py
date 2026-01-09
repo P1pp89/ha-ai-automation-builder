@@ -17,8 +17,6 @@ from .websocket_api import async_setup_ws
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = [Platform.WEBSOCKET_API]
-
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Imposta l'integrazione."""
     hass.data.setdefault(DOMAIN, {})

@@ -1,70 +1,80 @@
-\# 🧠 AI Automation Builder per Home Assistant
+# 🧠 AI Automation Builder per Home Assistant
 
+**Trasforma il linguaggio naturale in perfette automazioni YAML alimentate dall'IA!**
 
+Genera automazioni per Home Assistant semplicemente descrivendo ciò che vuoi in italiano o inglese. Nessuna conoscenza di YAML richiesta.
 
-\*\*Descrivi in italiano → Automazioni YAML perfette!\*\* 🇮🇹🇺🇸
+## ✨ Caratteristiche
 
+- 🎯 **Linguaggio Naturale → YAML** - Descrivi l'automazione, l'IA genera lo YAML
+- 🤖 **Molteplici Provider IA** - GROQ (gratis), OpenAI, Home Assistant Cloud, GitHub Models
+- ⚡ **Ultra-veloce** - Generazione istantanea con GROQ
+- 🔒 **Sicuro** - Chiavi API memorizzate in sicurezza in HA
+- 🌍 **Multi-lingua** - Supporto italiano e inglese
+- 📋 **Validazione real-time** - Rileva errori YAML prima di salvare
+- 🎨 **Interfaccia visuale** - Belle card Lovelace per costruire automazioni facilmente
+- 🔗 **Riconoscimento entità** - L'IA rileva automaticamente le tue entità
 
+## 🚀 Guida Rapida
 
-\[!\[HACS](https://img.shields.io/badge/HACS-Integrazione%20Custom-blue.svg)](https://github.com/P1pp89/ha-ai-automation-builder)
+### Installazione
 
+1. **Tramite HACS (Consigliato)**
+   - Aggiungi repository: `https://github.com/P1pp89/ha-ai-automation-builder`
+   - Cerca "AI Automation Builder"
+   - Clicca Installa
+   - Riavvia Home Assistant
 
+2. **Installazione Manuale**
+   - Scarica ed estrai in `custom_components/ai_automation_builder`
+   - Riavvia Home Assistant
 
-\## ✨ Caratteristiche
+### Configurazione
 
+1. Vai a **Impostazioni → Dispositivi e servizi → Crea integrazione**
+2. Cerca **"AI Automation Builder"**
+3. Scegli il tuo Provider IA:
+   - **GROQ** (Consigliato - Gratis, Veloce)
+     - Registrati: https://console.groq.com
+     - Genera API Key
+     - Usa modello: `mixtral-8x7b-32768`
+   - **Home Assistant Cloud** (Se iscritto)
+   - **OpenAI** (A pagamento, Molto potente)
+   - **GitHub Models** (Gratis con account GitHub)
 
+## 📖 Utilizzo
 
-🧠 \*\*AI Potente\*\* - Descrizione naturale → YAML
+### In Home Assistant
 
-🎨 \*\*Diagramma Flow\*\* - Trigger → Condizioni → Azioni
+1. Apri il tuo dashboard
+2. Trova "AI Automation Builder" nella barra laterale
+3. Inserisci la descrizione della tua automazione:
+   - "Accendi le luci del salotto quando arrivo a casa"
+   - "Invia notifica se la temperatura scende sotto 15°C"
+   - "Spegni tutte le luci alle 23:00"
+4. L'IA genera YAML all'istante
+5. Rivedi, valida e salva
 
-✅ \*\*Validazione Live\*\* - Errori prima di salvare
+### API WebSocket
 
-🔍 \*\*Riconoscimento Entità\*\* - Entità HA automatiche
+Per sviluppatori, usa l'API WebSocket:
 
-📥 \*\*Esporta YAML\*\* - Pronto per automations.yaml
+```javascript
+// Genera automazione
+{
+  "type": "ai_automation_builder/build_automation",
+  "prompt": "Accendi le luci quando rilevi movimento"
+}
 
-🌐 \*\*Italiano + Inglese\*\*
+// Ottieni entità
+{
+  "type": "ai_automation_builder/get_entities"
+}
 
-🪄 \*\*Ollama 1-Click\*\* - AI gratuita locale
+// Valida YAML
+{
+  "type": "ai_automation_builder/validate_yaml",
+  "yaml": "alias: La Mia Automazione\ntrigger:\n  platform: state"
+}
 
-
-
-\## 🚀 Installazione Rapida
-
-
-
-\### \*\*Method 1: HACS (Recommended)\*\*
-
-
-
-HACS → Integrations → ⋮ → Custom repositories
-
-Repository: https://github.com/P1pp89/ha-ai-automation-builder
-
-Categoria: Integration → Add
-
-Cerca "AI Automation Builder" → Install
-
-Riavvia Home Assistant
-
-
-
-\### \*\*Method 2: Manual\*\*
-
-Download: https://github.com/P1pp89/ha-ai-automation-builder/archive/refs/heads/main.zip
-
-Estrai i file: config/custom\_components/ai\_automation\_builder/
-
-Riavvia Home Assistant
-
-
-
-\## ⚙️ Setup
-
-Settings → Dispositivi e Servizi → + Aggiungi Integrazione
-
-→ "AI Automation Builder" → 🪄 "Install Ollama Auto"
-
-→ Aspetta 2 min → Sidebar 🤖 AI Automation!
 

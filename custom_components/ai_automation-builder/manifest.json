@@ -1,25 +1,10 @@
 {
   "domain": "ai_automation_builder",
-  "name": {
-    "en": "AI Automation Builder",
-    "it": "AI Automation Builder"
-  },
+  "name": "AI Automation Builder",
+  "codeowners": ["@tuo_username"],
   "config_flow": true,
-  "documentation": "https://github.com/P1pp89/ha-ai-automation-builder",
+  "documentation": "https://github.com/tuo_username/ha-ai-automation-builder",
   "iot_class": "local_poll",
-  "version": "2.0.5",
-  "requirements": ["aiohttp>=3.8.0"],
-  "panel_custom": [{
-    "name": "ai_automation_builder_panel",
-    "sidebar_title": {
-      "en": "🤖 AI Automation",
-      "it": "🤖 AI Automazioni"
-    },
-    "sidebar_icon": "mdi:robot-outline",
-    "url_path": "ai-automation",
-    "module_url": "/ai_automation_builder/panel/frontend.js"
-  }]
+  "requirements": [],
+  "version": "2.0.6"
 }
-
-
-

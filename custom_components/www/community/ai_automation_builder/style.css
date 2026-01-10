@@ -1,0 +1,211 @@
+:host {
+    --primary-color: #00d4ff;
+    --accent-color: #ff6b35;
+    --bg-color: #0a0a0f;
+    --card-bg: #151520;
+    --text-color: #e0e0e0;
+}
+
+ha-card {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 16px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 24px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.status {
+    padding: 8px 16px;
+    border-radius: 20px;
+    background: #28a745;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.input-section textarea {
+    width: 100%;
+    height: 120px;
+    background: #1a1a25;
+    border: 2px solid #333;
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--text-color);
+    font-family: monospace;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 16px;
+}
+
+.input-section textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+}
+
+.generate-btn, .export-btn {
+    background: linear-gradient(135deg, var(--primary-color), #0099cc);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.generate-btn:hover, .export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,212,255,0.4);
+}
+
+.generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin: 24px 0;
+    border-radius: 12px;
+    padding: 4px;
+    background: #222;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    color: #888;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#yaml-output {
+    background: #1a1a25;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 16px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+}
+
+.flow-diagram {
+    display: flex;
+    gap: 16px;
+    padding: 24px;
+    background: linear-gradient(135deg, #1a1a25, #222);
+    border-radius: 16px;
+    justify-content: space-around;
+}
+
+.flow-node {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    border-radius: 12px;
+    background: #2a2a3a;
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.flow-node.active {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,212,255,0.3);
+}
+
+.templates {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+.template-btn {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.template-btn:hover {
+    background: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.valid {
+    color: #28a745;
+    padding: 16px;
+    background: rgba(40,167,69,0.1);
+    border-radius: 8px;
+    border-left: 4px solid #28a745;
+}
+
+.error {
+    color: #dc3545;
+    padding: 16px;
+    background: rgba(220,53,69,0.1);
+    border-radius: 8px;
+    border-left: 4px solid #dc3545;
+}
+
+@media (max-width: 768px) {
+    ha-card {
+        margin: 8px;
+        padding: 16px;
+    }
+    
+    .flow-diagram {
+        flex-direction: column;
+    }
+}

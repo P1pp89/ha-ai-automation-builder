@@ -23,9 +23,11 @@
 </p>
 
 
-## Preview
+## 🖥 Interface
 
-https://raw.githubusercontent.com/P1pp89/ai-automation-builder/assets/preview.mp4
+<p align="center">
+  <img src="assets/screenshot_1.png" width="300">
+</p>
 
 ---
 
@@ -116,6 +118,7 @@ you can support the project here:
 <p align="center">
 <em>Built for Home Assistant power users who prefer thinking over typing.</em>
 </p>
+
 
 
 

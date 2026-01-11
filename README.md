@@ -15,6 +15,14 @@
 
 ---
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-blue?logo=home-assistant" />
+  <img src="https://img.shields.io/github/v/release/P1pp89/ai-automation-builder?label=version" />
+  <img src="https://img.shields.io/github/downloads/P1pp89/ai-automation-builder/total?label=downloads" />
+  <img src="https://img.shields.io/github/stars/P1pp89/ai-automation-builder?style=social" />
+</p>
+
+
 ## Preview
 
 https://github.com/P1pp89/ai-automation-builder/assets/preview.mp4
@@ -95,5 +103,6 @@ Clean code and good ideas appreciated.
 <p align="center">
 <em>Built for Home Assistant power users who prefer thinking over typing.</em>
 </p>
+
 
 

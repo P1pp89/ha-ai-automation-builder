@@ -1,0 +1,11 @@
+{
+  "domain": "ai_automation_builder",
+  "name": "AI Automation Builder",
+  "codeowners": [],
+  "config_flow": true,
+  "documentation": "https://github.com/custom/ai_automation_builder",
+  "issue_tracker": "https://github.com/custom/ai_automation_builder/issues",
+  "requirements": [],
+  "version": "1.0.2",
+  "iot_class": "cloud_polling"
+}

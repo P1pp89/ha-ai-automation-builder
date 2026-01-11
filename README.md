@@ -17,7 +17,7 @@
 
 ## Preview
 
-https://github.com/P1pp89/ai-automation-builder/blob/main/assets/preview.mp4
+https://github.com/P1pp89/ai-automation-builder/assets/preview.mp4
 
 ---
 
@@ -95,4 +95,5 @@ Clean code and good ideas appreciated.
 <p align="center">
 <em>Built for Home Assistant power users who prefer thinking over typing.</em>
 </p>
+
 

@@ -22,6 +22,8 @@
   <img src="https://img.shields.io/github/stars/P1pp89/ha-ai-automation-builder?style=social" />
 </p>
 
+---
+
 [repo]: https://github.com/P1pp89/ha-ai-automation-builder
 [releases]: https://github.com/P1pp89/ha-ai-automation-builder/releases
 

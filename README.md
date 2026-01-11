@@ -17,7 +17,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-blue?logo=home-assistant" />
-[![GitHub release](https://img.shields.io/github/v/release/P1pp89/ha-ai-automation-builder?display_name=tag)][releases]  [![GitHub stars](https://img.shields.io/github/stars/P1pp89/ha-ai-automation-builder?style=social)][repo]  [![GitHub forks](https://img.shields.io/github/forks/P1pp89/ha-ai-automation-builder?style=social)][repo]
+ [![GitHub release](https://img.shields.io/github/v/release/P1pp89/ha-ai-automation-builder?display_name=tag)][releases]  [![GitHub stars](https://img.shields.io/github/stars/P1pp89/ha-ai-automation-builder?style=social)][repo]  [![GitHub forks](https://img.shields.io/github/forks/P1pp89/ha-ai-automation-builder?style=social)][repo]
 
 [repo]: https://github.com/P1pp89/ha-ai-automation-builder
 [releases]: https://github.com/P1pp89/ha-ai-automation-builder/releases

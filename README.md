@@ -16,18 +16,14 @@
 ---
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-blue?logo=home-assistant" />
-  <img src="https://img.shields.io/github/v/release/P1pp89/ha-ai-automation-builder?display_name=tag" alt="Release Version" />
-<img src="https://img.shields.io/github/downloads/P1pp89/ha-ai-automation-builder/total" alt="Total Downloads" />
-  <img src="https://img.shields.io/github/stars/P1pp89/ha-ai-automation-builder?style=social" />
-</p>
+  <img src="https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-blue?logo=home-assistant" />
 
 [![GitHub release](https://img.shields.io/github/v/release/P1pp89/ha-ai-automation-builder?display_name=tag)][releases]  [![GitHub stars](https://img.shields.io/github/stars/P1pp89/ha-ai-automation-builder?style=social)][repo]  [![GitHub forks](https://img.shields.io/github/forks/P1pp89/ha-ai-automation-builder?style=social)][repo]
 
 [repo]: https://github.com/P1pp89/ha-ai-automation-builder
 [releases]: https://github.com/P1pp89/ha-ai-automation-builder/releases
 
-## 🖥 Interface
+## Interface
 
 <p align="center">
   <img src="assets/screenshot_1.png" width="300">
@@ -35,7 +31,7 @@
 
 ---
 
-## 🚀 Features
+## Features
 
 - Generate Home Assistant automations using AI
 - Describe automations in natural language

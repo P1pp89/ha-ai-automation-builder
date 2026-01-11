@@ -102,22 +102,10 @@ Clean code and good ideas appreciated.
 
 ---
 
-## Support the project
-
-If this integration saves you time or YAML headaches,  
-you can support the project here:
-
-<p align="center">
-  <a href="https://www.buymeacoffee.com/p1pp89" target="_blank">
-    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-blue.png" width="200" alt="Buy Me a Coffee">
-  </a>
-</p>
-
----
-
 <p align="center">
 <em>Built for Home Assistant power users who prefer thinking over typing.</em>
 </p>
+
 
 
 

@@ -95,7 +95,7 @@ Done. No YAML therapy needed.
 ## Support & Contributions
 
 - Bug reports and feature requests:  
-https://github.com/P1pp89/ai-automation-builder/issues
+https://github.com/P1pp89/ha-ai-automation-builder/issues
 
 Contributions are welcome.  
 Clean code and good ideas appreciated.

@@ -2,74 +2,43 @@
   "config": {
     "step": {
       "user": {
-        "title": "AI Automation Builder - Scegli il Provider",
-        "description": "{provider_info}\n\n**Home Assistant Cloud**: Se hai un abbonamento HA Cloud, ti consigliamo questa opzione per la massima affidabilità.\n\n**GROQ**: Gratis, velocissimo, nessuna API Key complessa. Perfetto per chi non ha HA Cloud.\n\n**OpenAI**: Potente, affidabile. Richiede API Key (crediti gratis iniziali).\n\n**GitHub Models**: Gratis con GitHub account, ottimi modelli open-source.",
+        "title": "AI Automation Builder",
+        "description": "Scegli il provider AI",
         "data": {
-          "ai_provider": "Provider AI"
-        }
-      },
-      "ha_cloud": {
-        "title": "Home Assistant Cloud - Configurazione",
-        "description": "Seleziona il modello GPT da usare. HA Cloud gestirà l'autenticazione automaticamente.",
-        "data": {
-          "ai_model": "Modello GPT"
+          "ai_provider": "Provider"
         }
       },
       "groq": {
-        "title": "GROQ - Configurazione Veloce",
-        "description": "{info}\n\n**API Key GROQ**: Deve iniziare con `gsk_`\n\n**Modello consigliato**: Mixtral-8x7b (velocissimo e gratis)",
+        "title": "Configurazione Groq",
+        "description": "Inserisci la tua API Key Groq (gratis su console.groq.com)",
         "data": {
-          "api_key": "API Key GROQ",
-          "ai_model": "Modello AI"
+          "api_key": "API Key",
+          "ai_model": "Modello"
         }
       },
       "openai": {
-        "title": "OpenAI - Configurazione",
-        "description": "{info}\n\n**API Key OpenAI**: Deve iniziare con `sk-`",
+        "title": "Configurazione OpenAI",
+        "description": "Inserisci la tua API Key OpenAI",
         "data": {
-          "api_key": "API Key OpenAI",
-          "ai_model": "Modello AI"
+          "api_key": "API Key",
+          "ai_model": "Modello"
         }
       },
-      "github_models": {
-        "title": "GitHub Models - Configurazione",
-        "description": "{info}\n\n**Token GitHub**: Usato per autenticarsi ai modelli GitHub",
+      "github": {
+        "title": "Configurazione GitHub Models",
+        "description": "Inserisci il tuo GitHub Token",
         "data": {
-          "api_key": "GitHub Token",
-          "ai_model": "Modello AI"
+          "api_key": "Token",
+          "ai_model": "Modello"
         }
       }
     },
     "error": {
       "invalid_api_key": "API Key non valida",
-      "invalid_endpoint": "Endpoint non valido",
-      "cannot_connect": "Impossibile connettersi all'endpoint",
-      "unknown": "Errore sconosciuto"
+      "cannot_connect": "Impossibile connettersi"
     },
     "abort": {
-      "already_configured": "Integrazione già configurata"
-    }
-  },
-  "options": {
-    "step": {
-      "init": {
-        "title": "Opzioni AI Automation Builder",
-        "data": {
-          "ai_model": "Modello AI"
-        }
-      }
-    }
-  },
-  "services": {
-    "build_automation": {
-      "name": "Genera Automazione",
-      "description": "Genera automazione da descrizione naturale",
-      "fields": {
-        "prompt": {
-          "name": "Descrizione",
-          "description": "Descrivi l'automazione che vuoi creare"
-        }
-      }
+      "already_configured": "Già configurato"
     }
   }
 }

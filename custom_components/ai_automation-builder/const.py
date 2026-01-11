@@ -8,9 +8,9 @@ CONF_AI_API_KEY = "api_key"
 CONF_AI_MODEL = "ai_model"
 
 AI_PROVIDERS = [
-    ("ollama", "Ollama (locale gratuito)"),
-    ("openai", "OpenAI"),
     ("groq", "Groq"),
+    ("openai", "OpenAI"),
+    ("github_models", "GitHub Models"),
 ]
 
 WS_TYPE_BUILD_AUTOMATION = "ai_automation_builder/build_automation"

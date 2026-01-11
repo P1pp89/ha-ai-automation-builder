@@ -1,22 +1,11 @@
 {
   "domain": "ai_automation_builder",
   "name": "AI Automation Builder",
-  "codeowners": ["@P1pp89"],
+  "codeowners": [],
   "config_flow": true,
-  "documentation": "https://github.com/P1pp89/ha-ai-automation-builder",
-  "iot_class": "local_polling",
-  "requirements": ["aiohttp", "pyyaml"],
-  "version": "2.2.4",
-  "homeassistant": "2026.1",
-  "lovelace": {
-    "resources": [
-      {
-        "url": "/local/ai-automation-builder/frontend.js",
-        "type": "module"
-      }
-    ],
-    "mode": "yaml"
-  }
+  "documentation": "https://github.com/custom/ai_automation_builder",
+  "issue_tracker": "https://github.com/custom/ai_automation_builder/issues",
+  "requirements": [],
+  "version": "1.0.2",
+  "iot_class": "cloud_polling"
 }
-
-

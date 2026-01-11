@@ -1,42 +1,42 @@
 # AI Automation Builder for Home Assistant
 
-Genera automazioni Home Assistant usando l'intelligenza artificiale.
+Generate Home Assistant automations using artificial intelligence.
 
-## Installazione
+## Installation
 
-### HACS (consigliato)
-1. Apri HACS
-2. Vai su Integrazioni
-3. Clicca "Aggiungi repository personalizzato"
-4. Incolla: `https://github.com/TuoUsername/ai-automation-builder`
-5. Cerca "AI Automation Builder"
-6. Clicca Installa
+### HACS (recommended)
+1. Open HACS
+2. Go to Integrations
+3. Click "Add Custom Repository"
+4. Paste: `https://github.com/YourUsername/ai-automation-builder`
+5. Search for "AI Automation Builder"
+6. Click Install
 
-### Manuale
-1. Scarica questa repository
-2. Copia `custom_components/ai_automation_builder` in `/config/custom_components/`
-3. Riavvia Home Assistant
+### Manual
+1. Download this repository
+2. Copy `custom_components/ai_automation_builder` to `/config/custom_components/`
+3. Restart Home Assistant
 
-## Configurazione
+## Configuration
 
-1. Vai in **Impostazioni → Dispositivi e Servizi**
-2. Clicca **Aggiungi integrazione**
-3. Cerca "AI Automation Builder"
-4. Scegli il provider (Groq, OpenAI, GitHub Models)
-5. Inserisci la tua API Key
+1. Go to **Settings → Devices & Services**
+2. Click **Add Integration**
+3. Search for "AI Automation Builder"
+4. Choose the provider (Groq, OpenAI, GitHub Models)
+5. Enter your API Key
 
-### API Key gratuite:
-- **Groq**: https://console.groq.com (consigliato, veloce e gratis)
+### Free API Keys:
+- **Groq**: https://console.groq.com (recommended, fast and (free)
 - **OpenAI**: https://platform.openai.com
 - **GitHub Models**: https://github.com/marketplace/models
 
-## Utilizzo
+## Usage
 
-1. Apri "AI Automation" dalla sidebar
-2. Descrivi l'automazione in linguaggio naturale
-3. Clicca "Genera Automazione"
-4. Copia il YAML e importalo in Home Assistant
+1. Open "AI Automation" from the sidebar
+2. Describe the automation in natural language
+3. Click "Generate Automation"
+4. Copy the YAML and import it into Home Assistant
 
-## Supporto
+## Support
 
-Per bug o richieste: [Issues](https://github.com/P1pp89/ai-automation-builder/issues)
+For bugs or requests: [Issues](https://github.com/P1pp89/ai-automation-builder/issues)

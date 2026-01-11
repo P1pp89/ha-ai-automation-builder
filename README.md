@@ -19,7 +19,7 @@
   <img src="https://img.shields.io/badge/Home%20Assistant-Custom%20Integration-blue?logo=home-assistant" />
   <img src="https://img.shields.io/github/v/release/P1pp89/ha-ai-automation-builder?display_name=tag" alt="Release Version" />
 <img src="https://img.shields.io/github/downloads/P1pp89/ha-ai-automation-builder/total" alt="Total Downloads" />
-  <img src="https://img.shields.io/github/stars/P1pp89/ai-automation-builder?style=social" />
+  <img src="https://img.shields.io/github/stars/P1pp89/ha-ai-automation-builder?style=social" />
 </p>
 
 

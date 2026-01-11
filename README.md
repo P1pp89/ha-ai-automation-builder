@@ -48,7 +48,7 @@
 1. Open **HACS**
 2. Go to **Integrations**
 3. Click **Add Custom Repository**
-4. Paste: https://github.com/P1pp89/ai-automation-builder
+4. Paste: https://github.com/P1pp89/ha-ai-automation-builder
 5. Search for **AI Automation Builder**
 6. Click **Install**
 7. Restart Home Assistant

@@ -1,13 +1,14 @@
 {
   "domain": "ai_automation_builder",
   "name": "AI Automation Builder",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "config_flow": true,
-  "documentation": "https://github.com/P1pp89/ha-ai-automation-builder",
-  "issue_tracker": "https://github.com/P1pp89/ha-ai-automation-builder/issues",
+  "documentation": "https://github.com/PakyITA/ha-ai-automation-builder",
+  "issue_tracker": "https://github.com/PakyITA/ha-ai-automation-builder/issues",
   "codeowners": ["@P1pp89"],
   "requirements": [],
   "iot_class": "cloud_polling"
 }
+
 
 

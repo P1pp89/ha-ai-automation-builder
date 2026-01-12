@@ -1,7 +1,7 @@
 {
   "domain": "ai_automation_builder",
   "name": "AI Automation Builder",
-  "version": "2.0.0",
+  "version": "2.0.2",
   "config_flow": true,
   "documentation": "https://github.com/PakyITA/ha-ai-automation-builder",
   "issue_tracker": "https://github.com/PakyITA/ha-ai-automation-builder/issues",
@@ -9,6 +9,4 @@
   "requirements": [],
   "iot_class": "cloud_polling"
 }
-
-
 

@@ -1,7 +1,7 @@
 {
   "name": "AI Automation Builder",
   "content_in_root": false,
-  "homeassistant": "2024.1.0",
+  "homeassistant": "2026.1.0",
   "domains": ["ai_automation_builder"],
   "render_readme": true
 }

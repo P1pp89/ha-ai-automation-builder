@@ -1,12 +1,12 @@
 {
   "domain": "ai_automation_builder",
   "name": "AI Automation Builder",
-  "codeowners": [],
+  "codeowners": ["@P1pp89"],
   "config_flow": true,
-  "documentation": "https://github.com/custom/ai_automation_builder",
-  "issue_tracker": "https://github.com/custom/ai_automation_builder/issues",
+  "documentation": "https://github.com/P1pp89/ai_automation_builder",
+  "issue_tracker": "https://github.com/P1pp89/ai_automation_builder/issues",
   "requirements": [],
-  "version": "1.0.0",
+  "version": "1.1.0",
   "iot_class": "cloud_polling"
 
 }

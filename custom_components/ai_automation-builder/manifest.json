@@ -6,7 +6,7 @@
   "documentation": "https://github.com/custom/ai_automation_builder",
   "issue_tracker": "https://github.com/custom/ai_automation_builder/issues",
   "requirements": [],
-  "version": "1.0.0",
+  "version": "2.0.0",
   "iot_class": "cloud_polling"
 
 }

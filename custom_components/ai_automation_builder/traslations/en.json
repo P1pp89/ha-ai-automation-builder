@@ -1,0 +1,24 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configure AI Automation Builder",
+        "description": "First install Ollama from Add-ons, then enter the endpoint.",
+        "data": {
+          "ai_provider": "AI Provider",
+          "ai_endpoint": "API Endpoint",
+          "api_key": "API Key (optional)",
+          "ai_model": "AI Model"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot connect to endpoint. Is Ollama running?",
+      "invalid_endpoint": "Invalid endpoint (use http:// or https://)",
+      "unknown": "Unknown error"
+    },
+    "abort": {
+      "already_configured": "Already configured"
+    }
+  }
+}

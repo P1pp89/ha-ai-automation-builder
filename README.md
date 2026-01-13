@@ -254,7 +254,7 @@ Apri un Issue su GitHub: [Issues](https://github.com/custom/ai_automation_builde
 | Home Assistant | Stato | Note |
 |---|---|---|
 | **2024.1.0+** | ✅ Supportato | Versione minima |
-| **2025.x.x** | ✅ Testato | Compatibile |
+| **2026.1.0** | ✅ Testato | Compatibile |
 | Python | **3.11+** | Obbligatorio |
 
 ---

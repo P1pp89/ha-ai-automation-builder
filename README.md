@@ -11,6 +11,7 @@
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2024.1.0+-41BDF5?logo=homeassistant&logoColor=white&style=flat-square)](https://www.home-assistant.io/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![Donate PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?style=flat-square&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=YVQPMTVWK46R4)
 
 **Genera automazioni Home Assistant con Intelligenza Artificiale!**
 

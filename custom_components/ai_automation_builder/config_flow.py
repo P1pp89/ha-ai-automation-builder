@@ -30,7 +30,6 @@ class AIAutomationBuilderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             provider = user_input.get("ai_provider", "groq")
             
-            # Se Groq, vai al passo groq
             if provider == "groq":
                 return await self.async_step_groq(user_input)
             elif provider == "openai":
@@ -38,7 +37,6 @@ class AIAutomationBuilderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             else:
                 return await self.async_step_github(user_input)
 
-        # Schema iniziale
         data_schema = vol.Schema({
             vol.Required("ai_provider", default="groq"): vol.In(["groq", "openai", "github_models"])
         })
@@ -71,14 +69,14 @@ class AIAutomationBuilderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     },
                 )
 
-        # Modelli Groq aggiornati (gennaio 2025)
+        # Modelli aggiornati Groq (Gennaio 2025)
         data_schema = vol.Schema({
             vol.Required("api_key"): str,
             vol.Optional("ai_model", default="llama-3.3-70b-versatile"): vol.In([
-                "llama-3.3-70b-versatile",
-                "llama-3.1-8b-instant",
-                "mixtral-8x7b-32768",
-                "gemma2-9b-it",
+                "llama-3.3-70b-versatile",  # Più recente e versatile
+                "llama-3.1-8b-instant",     # Veloce
+                "mixtral-8x7b-32768",       # Buon compromesso
+                "gemma2-9b-it",             # Alternativa
             ]),
         })
 
@@ -87,7 +85,7 @@ class AIAutomationBuilderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=data_schema,
             errors=errors,
             description_placeholders={
-                "info": "I modelli Groq sono gratuiti e molto veloci. Ottieni la tua API key su console.groq.com"
+                "info": "Ottieni API Key gratuita su console.groq.com"
             }
         )
 
@@ -113,13 +111,14 @@ class AIAutomationBuilderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     },
                 )
 
+        # Modelli OpenAI aggiornati
         data_schema = vol.Schema({
             vol.Required("api_key"): str,
             vol.Optional("ai_model", default="gpt-4o-mini"): vol.In([
-                "gpt-4o",
-                "gpt-4o-mini",
-                "gpt-4-turbo",
-                "gpt-3.5-turbo",
+                "gpt-4o-mini",       # Economico e veloce (raccomandato)
+                "gpt-4o",            # Più potente
+                "gpt-4-turbo",       # Turbo
+                "gpt-3.5-turbo",     # Più economico
             ]),
         })
 
@@ -127,6 +126,9 @@ class AIAutomationBuilderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="openai",
             data_schema=data_schema,
             errors=errors,
+            description_placeholders={
+                "info": "ATTENZIONE: OpenAI richiede credito prepagato. Verifica su platform.openai.com/account/billing"
+            }
         )
 
     async def async_step_github(self, user_input: dict[str, Any] | None = None) -> FlowResult:
@@ -161,4 +163,7 @@ class AIAutomationBuilderConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="github",
             data_schema=data_schema,
             errors=errors,
+            description_placeholders={
+                "info": "Ottieni token su github.com/settings/tokens"
+            }
         )

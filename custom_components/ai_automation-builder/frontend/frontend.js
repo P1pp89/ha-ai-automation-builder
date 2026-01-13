@@ -48,7 +48,7 @@ class AIAutomationBuilderCard extends LitElement {
         connected: 'Connesso',
         placeholder: 'Descrivi l\'automazione (es: Accendi luci alle 20:00)...',
         generate: '🧠 Genera Automazione',
-        export: '📥 Esporta YAML',
+        export: '📥 Copia YAML',
         validate: '✅ Valida YAML',
         tabs: { flow: '📊 Flow', yaml: '📝 YAML', validate: '✅ Validazione' },
         templates: 'Template rapidi:',
@@ -66,7 +66,7 @@ class AIAutomationBuilderCard extends LitElement {
         connected: 'Connected',
         placeholder: 'Describe your automation (e.g., Turn on lights at 8 PM)...',
         generate: '🧠 Generate Automation',
-        export: '📥 Export YAML',
+        export: '📥 Copy YAML',
         validate: '✅ Validate YAML',
         tabs: { flow: '📊 Flow', yaml: '📝 YAML', validate: '✅ Validation' },
         templates: 'Quick templates:',
@@ -140,15 +140,26 @@ class AIAutomationBuilderCard extends LitElement {
       return;
     }
 
+    // Verifica se la Clipboard API è disponibile
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    // ✅ Clipboard API disponibile
     navigator.clipboard.writeText(this.yamlOutput).then(() => {
-      this.showNotification('📋 Copiato negli appunti!', 'success');
+      this._showNotification('✅ Codice copiato negli appunti!', 'success');
       setTimeout(() => {
         window.location.href = '/config/automation/dashboard';
-      }, 1000);
-    }).catch(() => {
-      this.showNotification(this.t.error + ' - Copia fallita', 'error');
+      }, 1500);
+    }).catch((err) => {
+      console.error('Clipboard error:', err);
+      this._showNotification('⚠️ Copia automatica fallita. Seleziona e copia manualmente.', 'warning');
+      this.currentTab = 'yaml'; // Mostra il YAML per copia manuale
     });
+  } else {
+    // ❌ Clipboard API non disponibile (fallback)
+    console.warn('Clipboard API non disponibile, fallback a selezione manuale');
+    this._showNotification('⚠️ Copia automatica non disponibile. Seleziona e copia manualmente il codice.', 'warning');
+    this.currentTab = 'yaml'; // Mostra il YAML per copia manuale
   }
+}
 
   setTemplate(prompt) {
     const input = this.shadowRoot.querySelector('#prompt-input');

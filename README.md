@@ -44,16 +44,10 @@ Descrivi cosa vuoi in linguaggio naturale → IA genera YAML perfetto → Copia 
 ## Demo & Screenshots
 
 ### Pannello Principale
-![AI Automation Builder Panel](./docs/images/panel-main.png)
 
-### Generazione YAML
-![YAML Generation](./docs/images/panel-generate.png)
-
-### Validazione YAML
-![YAML Validation](./docs/images/panel-validate.png)
-
-### Copia Codice
-![Copy Code](./docs/images/panel-copy.png)
+<p align="center">
+  <img src="assets/screenshot_1.png" width="300">
+</p>
 
 ---
 

@@ -55,7 +55,7 @@ Descrivi cosa vuoi in linguaggio naturale → IA genera YAML perfetto → Copia 
 
 ---
 
-## 🚀 Installazione
+## Installazione
 
 ### Opzione 1: HACS (Consigliato)
 

@@ -1,9 +1,13 @@
+<div align="center">
+
 # 🧠 AI Automation Builder
+
+</div>
 
 <div align="center">
 
 [![HACS Badge](https://img.shields.io/badge/HACS-Custom%20Integration-41BDF5?logo=home-assistant&logoColor=white&style=flat-square)](https://github.com/hacs/integration)
-[![Latest Version](https://img.shields.io/github/v/release/custom/ai_automation_builder?style=flat-square&label=Latest%20Release)](https://github.com/custom/ai_automation_builder/releases)
+<img src="https://img.shields.io/github/v/release/P1pp89/ha-ai-automation-builder?display_name=tag" alt="Release Version" />
 [![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2024.1.0+-41BDF5?logo=homeassistant&logoColor=white&style=flat-square)](https://www.home-assistant.io/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
@@ -17,8 +21,9 @@ Descrivi cosa vuoi in linguaggio naturale → IA genera YAML perfetto → Copia 
 </div>
 
 ---
+<div align="center">
 
-## ✨ Caratteristiche Principali
+## Caratteristiche Principali
 
 | Feature | Descrizione |
 |---------|------------|
@@ -31,9 +36,10 @@ Descrivi cosa vuoi in linguaggio naturale → IA genera YAML perfetto → Copia 
 | 🔒 **Privacy First** | Nessun dato raccolto, tutto locale |
 | 🚀 **Production Ready** | Stabile, testato, zero crash |
 
----
+</div>
 
-## 📸 Demo & Screenshots
+---
+## Demo & Screenshots
 
 ### Pannello Principale
 ![AI Automation Builder Panel](./docs/images/panel-main.png)
@@ -51,7 +57,7 @@ Descrivi cosa vuoi in linguaggio naturale → IA genera YAML perfetto → Copia 
 
 ## 🚀 Installazione
 
-### Opzione 1: HACS (Consigliato) ⭐
+### Opzione 1: HACS (Consigliato)
 
 ```
 1. Apri Home Assistant → HACS → Integrazioni
@@ -60,10 +66,10 @@ Descrivi cosa vuoi in linguaggio naturale → IA genera YAML perfetto → Copia 
 4. Clicca "Scarica questa repository"
 5. Riavvia Home Assistant
 6. Settings → Devices & Services → AI Automation Builder
-7. Scegli Groq → Inserisci API key → Fine! ✅
+7. Scegli Groq → Inserisci API key → Fine!
 ```
 
-**Tempo:** ~2 minuti ⏱️
+**Tempo:** ~2 minuti
 
 ### Opzione 2: Installazione Manuale
 
@@ -81,11 +87,11 @@ git clone https://github.com/custom/ai_automation_builder.git custom_components/
 
 ---
 
-## ⚙️ Configurazione
+## Configurazione
 
 ### Step 1: Scegli Provider AI
 
-#### 🎯 **Groq (Gratuito - Consigliato)**
+#### **Groq (Gratuito - Consigliato)**
 
 ```
 1. Vai su → console.groq.com
@@ -94,14 +100,14 @@ git clone https://github.com/custom/ai_automation_builder.git custom_components/
 4. Scegli modello: llama-3.3-70b-versatile
 5. Home Assistant: Settings → Add Integration → AI Automation Builder
 6. Seleziona "Groq" → Incolla API key
-7. ✅ Fine!
+7. Fine!
 ```
 
 **Vantaggi:**
-- ✅ Completamente gratuito (nessun costo!)
-- ✅ Velocissimo (risposte in 1-2 secondi)
-- ✅ Modelli potenti (Llama 3.3, Mixtral, Gemma)
-- ✅ Zero configurazione complessa
+- Completamente gratuito (nessun costo!)
+- Velocissimo (risposte in 1-2 secondi)
+- Modelli potenti (Llama 3.3, Mixtral, Gemma)
+- Zero configurazione complessa
 
 #### **OpenAI (A pagamento)**
 
@@ -128,7 +134,7 @@ Sidebar → 🧠 AI Automation
 
 ---
 
-## 🎮 Come Usarlo
+## Come Usarlo
 
 ### Workflow Completo in 4 Passi
 
@@ -177,7 +183,7 @@ Dovresti vedere: ✅ **YAML valido!**
 
 ---
 
-## 📚 Documentazione Completa
+## Documentazione Completa
 
 ### Template Rapidi
 
@@ -201,15 +207,15 @@ L'IA ha accesso a tutte le tue entità Home Assistant:
 
 ### Linguaggio Supportato
 
-- ✅ Italiano fluente
-- ✅ English
-- ✅ Descrizioni lunghe e complesse
+- Italiano fluente
+- English
+- Descrizioni lunghe e complesse
 
 ---
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
-### ❓ "Pannello non carica"
+### "Pannello non carica"
 
 ```
 1. Controlla: Settings → System → Logs
@@ -218,7 +224,7 @@ L'IA ha accesso a tutte le tue entità Home Assistant:
 4. Pulisci cache browser (Ctrl+F5)
 ```
 
-### ❓ "IA non genera YAML"
+### "IA non genera YAML"
 
 ```
 1. Verifica API key Groq sia corretta
@@ -227,7 +233,7 @@ L'IA ha accesso a tutte le tue entità Home Assistant:
 4. Log di Home Assistant → cerca errori
 ```
 
-### ❓ "YAML non valida"
+### "YAML non valida"
 
 ```
 L'IA genera YAML corretto al 99%
@@ -235,7 +241,7 @@ Se non valida: aggiungi dettagli alla descrizione
 Es: "Accendi luce camera (light.camera) alle 22:00"
 ```
 
-### ❓ "Copia non funziona"
+### "Copia non funziona"
 
 ```
 Normal su app Companion/mobile
@@ -243,13 +249,13 @@ Workaround: Seleziona YAML manualmente
 → Copia con Ctrl+C
 ```
 
-### ❓ Altre Domande?
+### Altre Domande?
 
 Apri un Issue su GitHub: [Issues](https://github.com/custom/ai_automation_builder/issues)
 
 ---
 
-## 📊 Compatibilità
+## Compatibilità
 
 | Home Assistant | Stato | Note |
 |---|---|---|
@@ -259,7 +265,7 @@ Apri un Issue su GitHub: [Issues](https://github.com/custom/ai_automation_builde
 
 ---
 
-## 🐛 Segnalazione Bug
+## Segnalazione Bug
 
 Se trovi un bug:
 
@@ -284,23 +290,23 @@ Descrizione:
 
 ---
 
-## 💡 Suggerimenti per Miglioramenti
+## Suggerimenti per Miglioramenti
 
 Hai idee per nuove feature?
 
 Apri una Discussion: [Discussions](https://github.com/custom/ai_automation_builder/discussions)
 
 Idee comuni:
-- 🎯 Supporto più lingue
-- 📱 Widget mobile
-- 🔗 Integrazione con altri servizi
-- 🎨 Temi personalizzati
+- Supporto più lingue
+- Widget mobile
+- Integrazione con altri servizi
+- Temi personalizzati
 
 ---
 
-## 📜 Changelog
+## Changelog
 
-### v1.0.0 (Gennaio 2026) - 🎉 Release Stabile
+### v1.1.0 (Gennaio 2026) - 🎉 Release Stabile
 
 **Features:**
 - ✅ Generazione YAML con IA
@@ -347,23 +353,17 @@ git push origin feature/mio-miglioramento
 
 MIT License - vedi [LICENSE](LICENSE)
 
-Puoi:
-- ✅ Usare commercialmente
-- ✅ Modificare
-- ✅ Distribuire
-- ❌ Togliere licenza
-
 ---
 
 ## ⭐ Supporta il Progetto
 
 Se **AI Automation Builder** ti piace:
 
-- ⭐ **Star** il repository (aiuta la visibilità!)
-- 🐛 **Segnala bug** (migliora la qualità)
-- 💡 **Suggerisci feature** (rendi più potente)
-- 🔁 **Condividi** con altri (spread the love!)
-- 💬 **Scrivi review** su HACS (aiuta chi cerca)
+- **Star** il repository (aiuta la visibilità!)
+- **Segnala bug** (migliora la qualità)
+- **Suggerisci feature** (rendi più potente)
+- **Condividi** con altri (spread the love!)
+- **Scrivi review** su HACS (aiuta chi cerca)
 
 ---
 

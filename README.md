@@ -14,36 +14,35 @@
 
 [![Donate PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?style=flat-square&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=YVQPMTVWK46R4)
 
-**Genera automazioni Home Assistant con Intelligenza Artificiale!**
+**Generate Home Assistant automations with Artificial Intelligence!**
 
-Descrivi cosa vuoi in linguaggio naturale → IA genera YAML perfetto → Copia e incolla!
+Describe what you want in natural language → AI generates perfect YAML → Copy and paste!
 
-[🚀 Installazione Veloce](#-installazione) • [📚 Documentazione](#-documentazione) • [🐛 Segnala Bug](#-supporto) • [⭐ Supporta il Progetto](#supporta)
-
+[🚀 Quick Installation](#-installation) • [📚 Documentation](#-documentation) • [🐛 Report Bug](#-support) • [⭐ Support the Project](#support)
 </div>
 
 ---
 <div align="center">
 
-## Caratteristiche Principali
+## Main Features
 
-| Feature | Descrizione |
+| Feature | Description |
 |---------|------------|
-| 🧠 **IA Conversazionale** | Descrivi in italiano: "Accendi le luci alle 20:00" → YAML pronto |
-| ⚡ **Groq AI Gratuito** | Nessun costo, zero configurazione complessa, risultati immediati |
-| ✅ **Validazione YAML Real-Time** | Controlla istantaneamente se il YAML è corretto |
-| 📋 **Copia con Un Click** | Funziona su PC, mobile, app companion - sempre |
-| 🎨 **Dark Mode UI Moderna** | Interfaccia sleek nel pannello sidebar |
-| 🌍 **Multi-lingua** | Italiano 🇮🇹 + Inglese 🇬🇧 |
-| 🔒 **Privacy First** | Nessun dato raccolto, tutto locale |
-| 🚀 **Production Ready** | Stabile, testato, zero crash |
+| 🧠 **Conversational AI** | Describe in Italian: "Turn on the lights at 8:00 PM" → YAML ready |
+| ⚡ **Free Groq AI** | No cost, zero complex setup, instant results |
+| ✅ **Real-Time YAML Validation** | Instantly check if your YAML is correct |
+| 📋 **One-Click Copy** | Works on PC, mobile, companion apps - always |
+| 🎨 **Modern Dark Mode UI** | Sleek interface in the sidebar panel |
+| 🌍 **Multi-language** | Italian 🇮🇹 + English 🇬🇧 |
+| 🔒 **Privacy First** | No data collected, all local |
+| 🚀 **Production Ready** | Stable, tested, zero crashes |
 
 </div>
 
 ---
 ## Demo & Screenshots
 
-### Pannello Principale
+### Main Panel
 
 <p align="center">
   <img src="assets/screenshot_1.png" width="300">
@@ -51,77 +50,75 @@ Descrivi cosa vuoi in linguaggio naturale → IA genera YAML perfetto → Copia 
 
 ---
 
-## Installazione
+## Installation
 
-### Opzione 1: HACS (Consigliato)
+### Option 1: HACS (Recommended)
 
 ```
-1. Apri Home Assistant → HACS → Integrazioni
-2. Clicca "Esplora e scarica repository"
-3. Cerca: "AI Automation Builder"
-4. Clicca "Scarica questa repository"
-5. Riavvia Home Assistant
+1. Open Home Assistant → HACS → Integrations
+2. Click "Explore and download repositories"
+3. Search for "AI Automation Builder"
+4. Click "Download this repository"
+5. Restart Home Assistant
 6. Settings → Devices & Services → AI Automation Builder
-7. Scegli Groq → Inserisci API key → Fine!
+7. Select Groq → Enter API key → Done!
 ```
 
-**Tempo:** ~2 minuti
+**Time:** ~2 minutes
 
-### Opzione 2: Installazione Manuale
-
+### Option 2: Manual Installation
 ```bash
-# 1. Scarica il repository
+#1. Download the repository
 cd config
 git clone https://github.com/custom/ai_automation_builder.git custom_components/ai_automation_builder
 
-# 2. Riavvia Home Assistant
+#2. Restart Home Assistant
 # (Settings → System → Restart)
 
-# 3. Configura l'integrazione
+#3. Set up the integration
 # (Settings → Devices & Services → AI Automation Builder)
 ```
 
 ---
 
-## Configurazione
+## Configuration
 
-### Step 1: Scegli Provider AI
-
-#### **Groq (Gratuito - Consigliato)**
+### Step 1: Choose AI Provider
+#### **Groq (Free - Recommended)**
 
 ```
-1. Vai su → console.groq.com
-2. Crea account gratuito
-3. Genera API Key (inizia con gsk_)
-4. Scegli modello: llama-3.3-70b-versatile
+1. Go to → console.groq.com
+2. Create a free account
+3. Generate API Key (starts with gsk_)
+4. Choose template: llama-3.3-70b-versatile
 5. Home Assistant: Settings → Add Integration → AI Automation Builder
-6. Seleziona "Groq" → Incolla API key
-7. Fine!
+6. Select "Groq" → Paste API Key
+7. Done!
 ```
 
-**Vantaggi:**
-- Completamente gratuito (nessun costo!)
-- Velocissimo (risposte in 1-2 secondi)
-- Modelli potenti (Llama 3.3, Mixtral, Gemma)
-- Zero configurazione complessa
-
-#### **OpenAI (A pagamento)**
-
-```
-API Key: sk-... (da platform.openai.com)
-Modelli: gpt-4o, gpt-4o-mini, gpt-4-turbo
-Nota: Richiede crediti disponibili
-```
-
-#### **GitHub Models (Gratuito)**
+**Advantages:**
+- Completely free (no fees!)
+- Lightning fast (responses in 1-2 seconds)
+- Powerful templates (Llama 3.3, Mixtral, Gemma)
+- No complex configuration
+  
+#### **OpenAI (Paid)**
 
 ```
-Token: GitHub PAT (da github.com/settings/tokens)
-Modelli: gpt-4o, gpt-4o-mini
-Nota: Più lento, per testing
+API Key: sk-... (from platform.openai.com)
+Models: gpt-4o, gpt-4o-mini, gpt-4-turbo
+Note: Requires available credits
 ```
 
-### Step 2: Apri il Pannello
+#### **GitHub Models (Free)**
+
+```
+Token: GitHub PAT (from github.com/settings/tokens)
+Models: gpt-4o, gpt-4o-mini
+Note: Slower, for testing
+```
+
+### Step 2: Open the Panel
 
 ```
 Home Assistant → Settings → Dashboards
@@ -130,255 +127,252 @@ Sidebar → 🧠 AI Automation
 
 ---
 
-## Come Usarlo
+## How to Use It
 
-### Workflow Completo in 4 Passi
+### Complete Workflow in 4 Steps
 
-#### **Passo 1: Descrivi l'Automazione**
+#### **Step 1: Describe the Automation**
 
-Apri il pannello e digita in linguaggio naturale:
+Open the panel and type in natural language:
 
 ```
-"Accendi le luci della camera alle 22:00"
-"Invia notifica se la porta principale si apre"
-"Spegni tutti i dispositivi quando esco"
-"Aumenta riscaldamento a 23° quando nessuno è a casa"
+"Turn on bedroom lights at 10:00 PM"
+"Send notification if the front door opens"
+"Turn off all devices when I leave"
+"Turn heating to 23°C when no one is home"
 ```
 
-#### **Passo 2: Genera YAML**
+#### **Step 2: Generate YAML**
 
-Clicca il pulsante **🧠 Genera Automazione**
+Click the **🧠 Generate Automation** button
 
-L'IA genera il YAML in 1-2 secondi:
+The AI ​​generates the YAML in 1-2 seconds:
 ```yaml
-- alias: "Accendi luci camera alle 22:00"
-  description: "Automazione generata da AI"
-  trigger:
-    - platform: time
-      at: "22:00"
-  condition: []
-  action:
-    - service: light.turn_on
-      target:
-        entity_id: light.camera
+alias: Turn on camera lights at 10:00 PM
+description: Turn on camera lights at 10:00 PM
+trigger:
+  - platform: time
+    at: "10:00 PM"
+condition: []
+action:
+  - service: light.turn_on
+    data: {}
+mode: single
 ```
 
-#### **Passo 3: Valida**
+#### **Step 3: Validate**
 
-Clicca il tab **✅ Valida YAML**
+Click the **✅ Validate YAML** tab
 
-Dovresti vedere: ✅ **YAML valido!**
+You should see: ✅ **Valid YAML!**
 
-#### **Passo 4: Copia e Incolla**
+#### **Step 4: Copy and Paste**
 
-1. Clicca **📋 Copia Codice**
-2. Vai su **Settings → Automations & Scenes → Automations**
-3. Crea automazione → Modifica YAML
-4. Incolla il codice
-5. Salva → Riavvia Home Assistant
+1. Click **📋 Copy Code**
+2. Go to **Settings → Automations & Scenes → Automations**
+3. Create Automation → Edit YAML
+4. Paste the code
+5. Save → Restart Home Assistant
 
 ---
 
-## Documentazione Completa
+## Complete Documentation
 
-### Template Rapidi
+### Quick Templates
 
-Clicca sui template per autocompletare:
+Click on the templates to autocomplete:
 
-| Template | Descrizione | Esempio |
-|----------|------------|---------|
-| 🌙 **Luci Notturne** | Accendi luci soft di sera | Genera automazione di esempio |
-| 🚨 **Antintrusione** | Notifiche se movimento rilevato | Genera automazione di esempio |
-| 👕 **Lavatrice** | Avvisa quando è finita | Genera automazione di esempio |
+| Template | Description | Example |
+|----------|------------|----------|
+| 🌙 **Night Lights** | Turn on soft lights at night | Generate example automation |
+| 🚨 **Intrusion Detection** | Notify me when motion is detected | Generate example automation |
+| 👕 **Washing Machine** | Notify me when it's finished | Generate example automation |
 
-### Entità Disponibili
+### Available Entities
 
-L'IA ha accesso a tutte le tue entità Home Assistant:
-- 💡 Luci (`light.`)
-- 🌡️ Temperature (`sensor.`, `climate.`)
-- 🔐 Sensori (`binary_sensor.`)
-- 🔌 Switch (`switch.`, `input_boolean.`)
-- 📣 Notifiche (`notify.`)
-- ⏰ Timer e automazioni
+The AI ​​has access to all your Home Assistant entities:
+- 💡 Lights (`light.`)
+- 🌡️ Temperatures (`sensor.`, `climate.`)
+- 🔐 Sensors (`binary_sensor.`)
+- 🔌 Switches (`switch.`, `input_boolean.`)
+- 📣 Notifications (`notify.`)
+- ⏰ Timers and Automations
+- 
+### Supported Language
 
-### Linguaggio Supportato
-
-- Italiano fluente
+- Fluent Italian
 - English
-- Descrizioni lunghe e complesse
+- Long and complex descriptions
 
 ---
 
 ## Troubleshooting
 
-### "Pannello non carica"
+### "Panel not loading"
 
 ```
-1. Controlla: Settings → System → Logs
-2. Filtra: "ai_automation_builder"
-3. Riavvia HA se vedi errori
-4. Pulisci cache browser (Ctrl+F5)
+1. Check: Settings → System → Logs
+2. Filter: "ai_automation_builder"
+3. Restart HA if you see errors
+4. Clear browser cache (Ctrl+F5)
 ```
 
-### "IA non genera YAML"
+### "IA does not generate YAML"
 
 ```
-1. Verifica API key Groq sia corretta
-2. Controlla connessione internet
-3. Console browser (F12) → vedi errori?
-4. Log di Home Assistant → cerca errori
+1. Verify the correct Groq API key
+2. Check your internet connection
+3. Browser console (F12) → see errors?
+4. Home Assistant log → check for errors
 ```
 
-### "YAML non valida"
+### "Invalid YAML"
 
 ```
-L'IA genera YAML corretto al 99%
-Se non valida: aggiungi dettagli alla descrizione
-Es: "Accendi luce camera (light.camera) alle 22:00"
+AI generates 99% correct YAML
+If invalid: add details to the description
+Ex: "Turn on room light (light.camera) at 10:00 PM"
 ```
 
-### "Copia non funziona"
+### "Copy doesn't work"
 
 ```
-Normal su app Companion/mobile
-Workaround: Seleziona YAML manualmente
-→ Copia con Ctrl+C
+Normal on Companion/mobile app
+Workaround: Select YAML manually
+→ Copy with Ctrl+C
 ```
 
-### Altre Domande?
+### Any more questions?
 
-Apri un Issue su GitHub: [Issues](https://github.com/custom/ai_automation_builder/issues)
-
+Open an Issue on GitHub: [Issues](https://github.com/custom/ai_automation_builder/issues)
 ---
 
-## Compatibilità
+## Compatibility
 
-| Home Assistant | Stato | Note |
+| Home Assistant | Status | Notes |
 |---|---|---|
-| **2024.1.0+** | ✅ Supportato | Versione minima |
-| **2026.1.0** | ✅ Testato | Compatibile |
-| Python | **3.11+** | Obbligatorio |
+| **2024.1.0+** | ✅ Supported | Minimum Version |
+| **2026.1.0** | ✅ Tested | Compatible |
+| Python | **3.11+** | Required |
 
 ---
 
-## Segnalazione Bug
+## Bug Report
 
-Se trovi un bug:
+If you find a bug:
 
 ```
-1. Apri Settings → System → Logs
-2. Filtra: ai_automation_builder
-3. Copia i log di errore
-4. Apri GitHub Issue con i log
-5. Descrivi che cosa è successo
+1. Open Settings → System → Logs
+2. Filter: ai_automation_builder
+3. Copy the error logs
+4. Open the GitHub Issue with the logs
+5. Describe what happened
 ```
 
 **Template Issue:**
 ```
-Titolo: [BUG] Descrizione breve
+Title: [BUG] Short Description
 
-Descrizione:
-- Cosa hai fatto?
-- Cosa ti aspettavi?
-- Cosa è successo invece?
-- Log di errore:
+Description:
+- What did you do?
+- What did you expect?
+- What happened instead?
+- Error Log:
 ```
 
 ---
 
-## Suggerimenti per Miglioramenti
+### Suggestions for Improvements
 
-Hai idee per nuove feature?
+Do you have ideas for new features?
 
-Apri una Discussion: [Discussions](https://github.com/custom/ai_automation_builder/discussions)
+Open a Discussion: [Discussions](https://github.com/custom/ai_automation_builder/discussions)
 
-Idee comuni:
-- Supporto più lingue
-- Widget mobile
-- Integrazione con altri servizi
-- Temi personalizzati
-
+Common Ideas:
+- Multiple Language Support
+- Mobile Widgets
+- Integration with Other Services
+- Custom Themes
 ---
 
 ## Changelog
 
-### v1.1.0 (Gennaio 2026) - 🎉 Release Stabile
+### v1.1.0 (January 2026) - 🎉 stable Release
 
 **Features:**
-- ✅ Generazione YAML con IA
-- ✅ Validazione YAML real-time
-- ✅ Copia codice robusta (fallback per mobile)
-- ✅ Dark mode UI moderna
-- ✅ Multi-lingua (IT + EN)
+- ✅ AI-powered YAML generation
+- ✅ Real-time YAML validation
+- ✅ Robust code copying (fallback for mobile)
+- ✅ Modern UI dark mode
+- ✅ Multilingual (IT + EN)
 
 **Fixes:**
-- ✅ Blocking call risolto
-- ✅ HACS download completo
-- ✅ WebSocket stabile
-- ✅ Zero errori JavaScript
+- ✅ Blocking call resolved
+- ✅ HACS full download
+- ✅ Stable WebSocket
+- ​​✅ Zero JavaScript errors
 
 **Known Issues:**
-- Nessuno! 🎉
-
+- None! 🎉
 ---
 
-## 🤝 Contribuire
+## 🤝 Contribute
 
-Vuoi aiutare? Perfetto! 
+Want to help? Perfect!
 
 ```bash
-# 1. Fork il repository
-git clone https://github.com/TUO_USERNAME/ai_automation_builder.git
+# 1. Fork the repository
+git clone https://github.com/YOUR_USERNAME/ai_automation_builder.git
 
-# 2. Crea branch feature
-git checkout -b feature/mio-miglioramento
+# 2. Create branch feature
+git checkout -b feature/my-improvement
 
-# 3. Commit con messaggi chiari
-git commit -m "feat: aggiungi nuovo modello AI"
+# 3. Commit with clear messages
+git commit -m "feat: add new AI model"
 
 # 4. Push
-git push origin feature/mio-miglioramento
+git push origin feature/my-improvement
 
 # 5. Open Pull Request
-# (Descrivi le modifiche nel PR)
+# (Describe the changes in the PR)
 ```
 
 ---
 
-## 📜 Licenza
+## 📜 License
 
-MIT License - vedi [LICENSE](LICENSE)
-
----
-
-## ⭐ Supporta il Progetto
-
-Se **AI Automation Builder** ti piace:
-
-- **Star** il repository (aiuta la visibilità!)
-- **Segnala bug** (migliora la qualità)
-- **Suggerisci feature** (rendi più potente)
-- **Condividi** con altri (spread the love!)
-- **Scrivi review** su HACS (aiuta chi cerca)
+MIT License - see [LICENSE] (LICENSE)
 
 ---
 
-## 🙏 Ringraziamenti
+## ⭐ Support the Project
 
-- **Home Assistant** - Piattaforma fantastica
-- **Groq** - API IA gratuita e veloce
-- **Community** - Testing e feedback
+If you like **AI Automation Builder**:
+
+- **Star** the repository (helps visibility!)
+- **Report bugs** (improve quality)
+- **Suggest features** (make it more powerful)
+- **Share** with others (spread the love!)
+- **Write a review** on HACS (helps those who seek)
+
+---
+
+## 🙏 Acknowledgements
+
+- **Home Assistant** - Fantastic platform
+- **Groq** - Free and fast AI API
+- **Community** - Testing and feedback
 
 ---
 
 <div align="center">
 
-**Creato con ❤️ per la community Home Assistant**
+**Created with ❤️ for the Home Assistant community**
 
 [🏠 Home Assistant](https://www.home-assistant.io/) • [💬 Discord](https://discord.gg/homeassistant) • [📚 Forum](https://community.home-assistant.io/)
 
-**Domande?** Apri una [Discussion](https://github.com/custom/ai_automation_builder/discussions)  
-**Bug?** Apri un [Issue](https://github.com/custom/ai_automation_builder/issues)
+**Questions?** Open a [Discussion](https://github.com/custom/ai_automation_builder/discussions)
+**Bug?** Open an [Issue](https://github.com/custom/ai_automation_builder/issues)
 
 *Made with passion by developers, for developers* 🚀
 

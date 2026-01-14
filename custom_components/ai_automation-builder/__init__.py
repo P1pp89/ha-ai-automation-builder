@@ -82,7 +82,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             webcomponent_name="ai-automation-builder-panel",
             frontend_url_path="ai-automation-builder",
             sidebar_title="AI Automation",
-            sidebar_icon="mdi:robot-outline",
+            sidebar_icon="mdi:brain",
             module_url="/local/community/ai_automation_builder/panel.js",
             require_admin=True,
         )

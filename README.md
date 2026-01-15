@@ -52,7 +52,7 @@ Describe what you want in natural language → AI generates perfect YAML → Cop
 
 ## Installation
 
-### Option 1: HACS (Recommended)
+### HACS (Recommended)
 
 [![Apri il repository in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=P1pp89&repository=ha-ai-automation-builder&category=integration)
 
@@ -68,7 +68,7 @@ Describe what you want in natural language → AI generates perfect YAML → Cop
 
 **Time:** ~2 minutes
 
-### Option 2: Manual Installation
+### Manual Installation
 ```bash
 #1. Download the repository
 cd config

@@ -70,7 +70,7 @@ Describe what you want in natural language → AI generates perfect YAML → Cop
 ```bash
 #1. Download the repository
 cd config
-git clone https://github.com/custom/ai_automation_builder.git custom_components/ai_automation_builder
+git clone https://github.com/P1pp89/ha-ai-automation-builder.git custom_components/ai_automation_builder
 
 #2. Restart Home Assistant
 # (Settings → System → Restart)

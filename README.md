@@ -54,6 +54,8 @@ Describe what you want in natural language → AI generates perfect YAML → Cop
 
 ### Option 1: HACS (Recommended)
 
+[![Apri il repository in HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=P1pp89&repository=ha-ai-automation-builder&category=integration)
+
 ```
 1. Open Home Assistant → HACS → Integrations
 2. Click "Explore and download repositories"

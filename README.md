@@ -49,29 +49,19 @@ Describe what you want in natural language → AI generates perfect YAML → Cop
 ---
 ## Demo & Screenshots
 
-### Main Panel
-
-<p align="center">
-  <img src="assets/screenshot_1.png" alt="Main Panel" width="80%"/>
-</p>
-
-### YAML Generation
-<p align="center">
-  <img src="assets/screenshot_2.png" alt="YAML Generation" width="80%"/>
-</p>
-
-### Preview Mode
-<p align="center">
-  <img src="assets/screenshot_3.png" alt="Preview Mode" width="80%"/>
-</p>
-
-### Test & Dry Run
-<p align="center">
-  <img src="assets/screenshot_4.png" alt="Test Mode" width="80%"/>
-</p>
+<div style="display: flex; justify-content: space-around;">
+  <img src="assets/screenshot_1.png" width="300" alt="Screenshot 1">
+  <img src="assets/screenshot_2.png" width="300" alt="Screenshot 2">
+  <img src="assets/screenshot_3.png" width="300" alt="Screenshot 3">
+  <img src="assets/screenshot_4.png" width="300" alt="Screenshot 4">
+  <img src="assets/screenshot_7.png" width="300" alt="Screenshot 5">
+  <img src="assets/screenshot_6.png" width="300" alt="Screenshot 6">
+  <img src="assets/screenshot_8.png" width="300" alt="Screenshot 7">
+  <img src="assets/screenshot_5.png" width="300" alt="Screenshot 8">
+  
+</div>
 
 </details>
----
 
 ## Installation
 

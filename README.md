@@ -6,13 +6,17 @@
 
 <div align="center">
 
-[![HACS Badge](https://img.shields.io/badge/HACS-Custom%20Integration-41BDF5?logo=home-assistant&logoColor=white&style=flat-square)](https://github.com/hacs/integration)
-<img src="https://img.shields.io/github/v/release/P1pp89/ha-ai-automation-builder?display_name=tag" alt="Release Version" />
-[![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2024.1.0+-41BDF5?logo=homeassistant&logoColor=white&style=flat-square)](https://www.home-assistant.io/)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![HACS](https://img.shields.io/badge/HACS-Custom-41BDF5?style=for-the-badge&logo=home-assistant&logoColor=white)](https://github.com/hacs/integration)
+[![Release](https://img.shields.io/github/v/release/P1pp89/ha-ai-automation-builder?style=for-the-badge&logo=github)](https://github.com/P1pp89/ha-ai-automation-builder/releases)
+[![Home Assistant](https://img.shields.io/badge/Home%20Assistant-2024.1.0+-41BDF5?style=for-the-badge&logo=homeassistant&logoColor=white)](https://www.home-assistant.io/)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 
-[![Donate PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?style=flat-square&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=YVQPMTVWK46R4)
+[![Downloads](https://img.shields.io/github/downloads/P1pp89/ha-ai-automation-builder/total?style=for-the-badge&logo=github)](https://github.com/P1pp89/ha-ai-automation-builder/releases)
+[![Stars](https://img.shields.io/github/stars/P1pp89/ha-ai-automation-builder?style=for-the-badge&logo=github)](https://github.com/P1pp89/ha-ai-automation-builder/stargazers)
+[![Issues](https://img.shields.io/github/issues/P1pp89/ha-ai-automation-builder?style=for-the-badge&logo=github)](https://github.com/P1pp89/ha-ai-automation-builder/issues)
+
+[![Donate PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=YVQPMTVWK46R4)
 
 **Generate Home Assistant automations with Artificial Intelligence!**
 
@@ -28,12 +32,15 @@ Describe what you want in natural language → AI generates perfect YAML → Cop
 
 | Feature | Description |
 |---------|------------|
-| 🧠 **Conversational AI** | Describe in Italian: "Turn on the lights at 8:00 PM" → YAML ready |
+| 🧠 **Conversational AI** | Describe: "Turn on the lights at 8:00 PM" → YAML ready |
 | ⚡ **Free Groq AI** | No cost, zero complex setup, instant results |
 | ✅ **Real-Time YAML Validation** | Instantly check if your YAML is correct |
+| 👁️ **Preview Mode** | Analyze what the automation will do before saving |
+| 🧪 **Test & Dry Run** | Test automations safely with simulation mode |
+| 🎯 **Smart Entity Suggestions** | Intelligent autocomplete and entity replacement |
 | 📋 **One-Click Copy** | Works on PC, mobile, companion apps - always |
 | 🎨 **Modern Dark Mode UI** | Sleek interface in the sidebar panel |
-| 🌍 **Multi-language** | Italian 🇮🇹 + English 🇬🇧 |
+| 🌍 **Multi-language** | 7 languages: Italian 🇮🇹, English 🇬🇧, Spanish 🇪🇸, French 🇫🇷, German 🇩🇪, Portuguese 🇵🇹, Dutch 🇳🇱 |
 | 🔒 **Privacy First** | No data collected, all local |
 | 🚀 **Production Ready** | Stable, tested, zero crashes |
 
@@ -45,9 +52,25 @@ Describe what you want in natural language → AI generates perfect YAML → Cop
 ### Main Panel
 
 <p align="center">
-  <img src="assets/screenshot_1.png" width="300">
+  <img src="assets/screenshot_1.png" alt="Main Panel" width="80%"/>
 </p>
 
+### YAML Generation
+<p align="center">
+  <img src="assets/screenshot_2.png" alt="YAML Generation" width="80%"/>
+</p>
+
+### Preview Mode
+<p align="center">
+  <img src="assets/screenshot_3.png" alt="Preview Mode" width="80%"/>
+</p>
+
+### Test & Dry Run
+<p align="center">
+  <img src="assets/screenshot_4.png" alt="Test Mode" width="80%"/>
+</p>
+
+</details>
 ---
 
 ## Installation
@@ -131,7 +154,7 @@ Sidebar → 🧠 AI Automation
 
 ## How to Use It
 
-### Complete Workflow in 4 Steps
+### Complete Workflow in 6 Steps
 
 #### **Step 1: Describe the Automation**
 
@@ -148,7 +171,7 @@ Open the panel and type in natural language:
 
 Click the **🧠 Generate Automation** button
 
-The AI ​​generates the YAML in 1-2 seconds:
+The AI generates the YAML in 1-2 seconds:
 ```yaml
 alias: Turn on camera lights at 10:00 PM
 description: Turn on camera lights at 10:00 PM
@@ -162,19 +185,54 @@ action:
 mode: single
 ```
 
-#### **Step 3: Validate**
+#### **Step 3: Preview & Test**
+
+**👁️ Preview Mode**: Click **Preview** to analyze what the automation will do:
+- See all triggers, conditions, and actions explained
+- Check which entities will be affected
+- Get warnings about missing entities
+- **🎯 Smart Entity Suggestions**: Replace missing entities with one click
+- Understand the automation flow before saving
+
+**🔄 Entity Replacement**: When entities are not found:
+- Click **Replace Entity** button next to the error
+- Get intelligent suggestions based on entity name and domain
+- Search through all available entities
+- One-click replacement with automatic YAML update
+
+**🧪 Test Mode**: Click **Test Run** to execute the automation once:
+- Real execution to verify it works
+- See which actions were successful
+- Get detailed error messages if something fails
+- Safe testing environment
+
+**🔍 Dry Run**: Click **Simulation** for risk-free testing:
+- Simulate the automation without real effects
+- See predicted state changes
+- Understand what would happen without actually doing it
+- Perfect for testing complex automations
+
+#### **Step 4: Validate**
 
 Click the **✅ Validate YAML** tab
 
 You should see: ✅ **Valid YAML!**
 
-#### **Step 4: Copy and Paste**
+#### **Step 5: Copy and Paste**
 
 1. Click **📋 Copy Code**
 2. Go to **Settings → Automations & Scenes → Automations**
 3. Create Automation → Edit YAML
 4. Paste the code
 5. Save → Restart Home Assistant
+
+#### **Step 6: Monitor**
+
+Use the preview and test features to:
+- Debug issues before deployment
+- Understand complex automations
+- Verify entity availability
+- Test edge cases safely
 
 ---
 
@@ -186,25 +244,31 @@ Click on the templates to autocomplete:
 
 | Template | Description | Example |
 |----------|------------|----------|
-| 🌙 **Night Lights** | Turn on soft lights at night | Generate example automation |
-| 🚨 **Intrusion Detection** | Notify me when motion is detected | Generate example automation |
-| 👕 **Washing Machine** | Notify me when it's finished | Generate example automation |
+| **Night Lights** | Turn on soft lights at night | Generate example automation |
+| **Intrusion Detection** | Notify me when motion is detected | Generate example automation |
+| **Washing Machine** | Notify me when it's finished | Generate example automation |
 
 ### Available Entities
 
 The AI ​​has access to all your Home Assistant entities:
-- 💡 Lights (`light.`)
-- 🌡️ Temperatures (`sensor.`, `climate.`)
-- 🔐 Sensors (`binary_sensor.`)
-- 🔌 Switches (`switch.`, `input_boolean.`)
-- 📣 Notifications (`notify.`)
-- ⏰ Timers and Automations
-- 
-### Supported Language
+- Lights (`light.`)
+- Temperatures (`sensor.`, `climate.`)
+- Sensors (`binary_sensor.`)
+- Switches (`switch.`, `input_boolean.`)
+- Notifications (`notify.`)
+- Timers and Automations
 
-- Fluent Italian
-- English
-- Long and complex descriptions
+### Supported Languages
+
+- 🇮🇹 **Italian** (Italiano) - Native support
+- 🇬🇧 **English** - Full support  
+- 🇪🇸 **Spanish** (Español) - Complete translation
+- 🇫🇷 **French** (Français) - Complete translation
+- 🇩🇪 **German** (Deutsch) - Complete translation
+- 🇵🇹 **Portuguese** (Português) - Complete translation
+- 🇳🇱 **Dutch** (Nederlands) - Complete translation
+
+The interface automatically adapts to your Home Assistant language settings with intelligent fallback to English for unsupported languages.
 
 ---
 
@@ -299,20 +363,48 @@ Common Ideas:
 
 ## Changelog
 
+### v2.0.0 (January 2026) - Multi-Language & Test Features Release
+
+**New Features:**
+- **7-Language Support**: Italian, English, Spanish, French, German, Portuguese, Dutch
+- **Automatic Language Detection**: Based on Home Assistant locale settings
+- **Intelligent Fallback System**: Graceful handling of unsupported languages
+- **Localized Templates**: Quick automation examples in each language
+- **Cultural Adaptation**: Time formats and examples adapted to local conventions
+- **Preview Mode**: Analyze automations before saving with detailed breakdown
+- **Test Mode**: Execute automations once to verify they work correctly
+- **Dry Run Mode**: Simulate automations without real effects for safe testing
+- **Entity Validation**: Check if entities exist and warn about missing ones
+- **Advanced Analysis**: Detailed breakdown of triggers, conditions, and actions
+- **Smart Entity Suggestions**: Intelligent autocomplete and entity replacement
+- **One-Click Entity Fix**: Replace missing entities with smart suggestions
+- **Entity Search**: Search and filter through all Home Assistant entities
+- **Mobile Optimized**: Fully responsive design for all devices
+
+**Improvements:**
+- Enhanced user interface with 5 tabs (Flow, YAML, Validation, Preview, Test)
+- Better error handling and user feedback
+- Comprehensive translation documentation
+- Improved accessibility for international users
+- Advanced debugging capabilities for complex automations
+- Smart entity matching algorithm with scoring system
+- Touch-friendly interface with optimized spacing
+- Real-time entity suggestions and search
+
 ### v1.1.0 (January 2026) - 🎉 stable Release
 
 **Features:**
-- ✅ AI-powered YAML generation
-- ✅ Real-time YAML validation
-- ✅ Robust code copying (fallback for mobile)
-- ✅ Modern UI dark mode
-- ✅ Multilingual (IT + EN)
+- AI-powered YAML generation
+- Real-time YAML validation
+- Robust code copying (fallback for mobile)
+- Modern UI dark mode
+- Multilingual (IT + EN)
 
 **Fixes:**
-- ✅ Blocking call resolved
-- ✅ HACS full download
-- ✅ Stable WebSocket
-- ​​✅ Zero JavaScript errors
+- Blocking call resolved
+- HACS full download
+- Stable WebSocket
+- Zero JavaScript errors
 
 **Known Issues:**
 - None! 🎉
@@ -375,6 +467,11 @@ If you like **AI Automation Builder**:
 
 **Questions?** Open a [Discussion](https://github.com/custom/ai_automation_builder/discussions)
 **Bug?** Open an [Issue](https://github.com/custom/ai_automation_builder/issues)
+
+*Made with passion by developers, for developers* 🚀
+
+</div>
+
 
 *Made with passion by developers, for developers* 🚀
 

@@ -40,5 +40,18 @@
     "abort": {
       "already_configured": "Già configurato"
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Opzioni AI Automation Builder",
+        "description": "Configura le impostazioni avanzate",
+        "data": {
+          "ai_model": "Modello AI",
+          "max_tokens": "Token massimi",
+          "temperature": "Temperatura"
+        }
+      }
+    }
   }
 }

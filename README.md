@@ -48,17 +48,18 @@ Describe what you want in natural language → AI generates perfect YAML → Cop
 
 ---
 ## Demo & Screenshots
-
-<div style="display: flex; justify-content: space-around;">
-  <img src="assets/screenshot_1.png" width="300" alt="Screenshot 1">
-  <img src="assets/screenshot_2.png" width="300" alt="Screenshot 2">
-  <img src="assets/screenshot_3.png" width="300" alt="Screenshot 3">
-  <img src="assets/screenshot_4.png" width="300" alt="Screenshot 4">
-  <img src="assets/screenshot_7.png" width="300" alt="Screenshot 5">
-  <img src="assets/screenshot_6.png" width="300" alt="Screenshot 6">
-  <img src="assets/screenshot_8.png" width="300" alt="Screenshot 7">
-  <img src="assets/screenshot_5.png" width="300" alt="Screenshot 8">
+<div align="center">
+  <div style="display: flex; justify-content: space-around;">
+    <img src="assets/screenshot_1.png" width="300" alt="Screenshot 1">
+    <img src="assets/screenshot_2.png" width="300" alt="Screenshot 2">
+    <img src="assets/screenshot_3.png" width="300" alt="Screenshot 3">
+    <img src="assets/screenshot_4.png" width="300" alt="Screenshot 4">
+    <img src="assets/screenshot_7.png" width="300" alt="Screenshot 5">
+    <img src="assets/screenshot_6.png" width="300" alt="Screenshot 6">
+    <img src="assets/screenshot_5.png" width="300" alt="Screenshot 7">
+    <img src="assets/screenshot_8.png" width="300" alt="Screenshot 8">
   
+  </div>
 </div>
 
 </details>
@@ -357,7 +358,7 @@ Common Ideas:
 
 **New Features:**
 - **7-Language Support**: Italian, English, Spanish, French, German, Portuguese, Dutch
-- **Automatic Language Detection**: Based on Home Assistant locale settings
+- **Automatic Language Detection**: Based on Home Assistant local settings
 - **Intelligent Fallback System**: Graceful handling of unsupported languages
 - **Localized Templates**: Quick automation examples in each language
 - **Cultural Adaptation**: Time formats and examples adapted to local conventions
@@ -381,7 +382,7 @@ Common Ideas:
 - Touch-friendly interface with optimized spacing
 - Real-time entity suggestions and search
 
-### v1.1.0 (January 2026) - 🎉 stable Release
+### v1.1.0 (January 2026) - 🎉 Stable Release
 
 **Features:**
 - AI-powered YAML generation
@@ -400,7 +401,7 @@ Common Ideas:
 - None! 🎉
 ---
 
-## 🤝 Contribute
+## Contribute
 
 Want to help? Perfect!
 
@@ -423,13 +424,13 @@ git push origin feature/my-improvement
 
 ---
 
-## 📜 License
+## License
 
 MIT License - see [LICENSE] (LICENSE)
 
 ---
 
-## ⭐ Support the Project
+## Support the Project
 
 If you like **AI Automation Builder**:
 
@@ -441,7 +442,7 @@ If you like **AI Automation Builder**:
 
 ---
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 - **Home Assistant** - Fantastic platform
 - **Groq** - Free and fast AI API

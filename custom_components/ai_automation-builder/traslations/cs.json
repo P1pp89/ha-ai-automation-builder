@@ -1,0 +1,24 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Nastavení AI Automation Builder",
+        "description": "Nejprve nainstalujte Ollama z doplňků a poté zadejte endpoint.",
+        "data": {
+          "ai_provider": "Poskytovatel AI",
+          "ai_endpoint": "API endpoint",
+          "api_key": "API klíč (volitelné)",
+          "ai_model": "AI model"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nelze se připojit k endpointu. Je Ollama spuštěná?",
+      "invalid_endpoint": "Neplatný endpoint (použijte http:// nebo https://)",
+      "unknown": "Neznámá chyba"
+    },
+    "abort": {
+      "already_configured": "Již nakonfigurováno"
+    }
+  }
+}

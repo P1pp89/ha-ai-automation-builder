@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import time
 from typing import Any
 
 import aiohttp
@@ -21,6 +22,9 @@ from .const import (
     WS_TYPE_TEST_AUTOMATION,
     WS_TYPE_DRY_RUN_AUTOMATION,
 )
+
+# Nuovo tipo per ottenere info versione
+WS_TYPE_GET_VERSION = "ai_automation_builder/get_version"
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -304,6 +308,7 @@ async def async_setup_ws(hass: HomeAssistant) -> None:
     websocket_api.async_register_command(hass, ws_preview_automation)
     websocket_api.async_register_command(hass, ws_test_automation)
     websocket_api.async_register_command(hass, ws_dry_run_automation)
+    websocket_api.async_register_command(hass, ws_get_version)
     _LOGGER.info("✅ WebSocket commands registrati")
 
 
@@ -1287,3 +1292,38 @@ async def simulate_single_action(hass: HomeAssistant, action: dict, language: st
             simulation["description"] = f"⚠️ {get_translation(language, 'entity_not_found', entity_id=entity_id)}"
     
     return simulation
+
+@websocket_api.websocket_command({
+    vol.Required("type"): WS_TYPE_GET_VERSION,
+})
+@websocket_api.async_response
+async def ws_get_version(
+    hass: HomeAssistant,
+    connection: websocket_api.ActiveConnection,
+    msg: dict[str, Any],
+) -> None:
+    """Restituisce informazioni sulla versione del componente."""
+    try:
+        import json
+        import os
+        
+        # Leggi la versione dal manifest.json
+        manifest_path = os.path.join(os.path.dirname(__file__), "manifest.json")
+        version = "2.0.0"  # Fallback
+        
+        try:
+            with open(manifest_path, 'r', encoding='utf-8') as f:
+                manifest = json.load(f)
+                version = manifest.get("version", "2.0.0")
+        except Exception as e:
+            _LOGGER.warning("⚠️ Errore lettura versione: %s", e)
+        
+        connection.send_result(msg["id"], {
+            "version": version,
+            "component_name": "AI Automation Builder",
+            "timestamp": int(time.time())
+        })
+        
+    except Exception as e:
+        _LOGGER.error("❌ Errore get_version: %s", e)
+        connection.send_error(msg["id"], "version_failed", str(e))

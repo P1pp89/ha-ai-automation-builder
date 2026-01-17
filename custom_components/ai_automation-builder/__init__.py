@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 
@@ -20,6 +21,17 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up AI Automation Builder from a config entry."""
+
+    # Leggi la versione dal manifest.json
+    manifest_path = os.path.join(os.path.dirname(__file__), "manifest.json")
+    component_version = "2.0.0"  # Fallback
+    try:
+        with open(manifest_path, 'r', encoding='utf-8') as f:
+            manifest = json.load(f)
+            component_version = manifest.get("version", "2.0.0")
+        _LOGGER.info("✅ Versione componente: %s", component_version)
+    except Exception as e:
+        _LOGGER.warning("⚠️ Errore lettura versione dal manifest: %s", e)
 
     # Salva config
     hass.data.setdefault(DOMAIN, {})
@@ -52,14 +64,49 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         if os.path.exists(frontend_source):
             import shutil
+            import hashlib
+
+            # Genera un hash basato sulla versione per cache busting più efficace
+            version_hash = hashlib.md5(component_version.encode()).hexdigest()[:8]
 
             for file in ["panel.js", "frontend.js", "style.css", "index.html"]:
                 source_file = os.path.join(frontend_source, file)
                 target_file = os.path.join(frontend_path, file)
 
                 if os.path.exists(source_file):
-                    shutil.copy2(source_file, target_file)
-                    _LOGGER.info("✅ %s copiato in www", file)
+                    # Leggi il contenuto del file
+                    with open(source_file, 'r', encoding='utf-8') as f:
+                        content = f.read()
+                    
+                    if file.endswith('.js'):
+                        # Sostituisci la versione hardcoded con quella dinamica
+                        content = content.replace("this.componentVersion = '2.0.0';", f"this.componentVersion = '{component_version}';")
+                        
+                        # Aggiungi cache busting agli import CSS se presenti
+                        content = content.replace(
+                            'href="/local/community/ai_automation_builder/style.css"',
+                            f'href="/local/community/ai_automation_builder/style.css?v={component_version}&h={version_hash}"'
+                        )
+                    
+                    elif file.endswith('.html'):
+                        # Aggiungi cache busting ai link CSS e JS nell'HTML
+                        content = content.replace(
+                            'href="style.css"',
+                            f'href="style.css?v={component_version}&h={version_hash}"'
+                        )
+                        content = content.replace(
+                            'src="panel.js"',
+                            f'src="panel.js?v={component_version}&h={version_hash}"'
+                        )
+                        content = content.replace(
+                            'src="frontend.js"',
+                            f'src="frontend.js?v={component_version}&h={version_hash}"'
+                        )
+                    
+                    # Scrivi il file modificato
+                    with open(target_file, 'w', encoding='utf-8') as f:
+                        f.write(content)
+                    _LOGGER.info("✅ %s copiato e aggiornato con versione %s (hash: %s)", file, component_version, version_hash)
                 else:
                     _LOGGER.warning("⚠️ %s non trovato in frontend/", file)
         else:
@@ -77,13 +124,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         if "ai-automation-builder" in existing_panels:
             _LOGGER.info("⚠️ Pannello già registrato, aggiornamento...")
 
+        # Genera hash per cache busting più efficace
+        import hashlib
+        version_hash = hashlib.md5(component_version.encode()).hexdigest()[:8]
+
         await panel_custom.async_register_panel(
             hass,
             webcomponent_name="ai-automation-builder-panel",
             frontend_url_path="ai-automation-builder",
             sidebar_title="AI Automation",
             sidebar_icon="mdi:brain",
-            module_url="/local/community/ai_automation_builder/panel.js",
+            module_url=f"/local/community/ai_automation_builder/panel.js?v={component_version}&h={version_hash}",
             require_admin=True,
         )
 

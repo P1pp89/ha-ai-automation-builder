@@ -41,6 +41,8 @@ class AIAutomationBuilderPanel extends LitElement {
     this.showEntityPicker = false;
     this.selectedEntityForReplacement = null;
     this.entitySearchQuery = '';
+    this.componentVersion = '2.0.0'; // Versione del componente (fallback)
+    this.loadComponentVersion(); // Carica versione dinamicamente
   }
 
   connectedCallback() {
@@ -69,11 +71,25 @@ class AIAutomationBuilderPanel extends LitElement {
     }
   }
 
+  async loadComponentVersion() {
+    try {
+      const result = await this._callWebSocket('ai_automation_builder/get_version', {});
+      if (result.version) {
+        this.componentVersion = result.version;
+        this.requestUpdate(); // Aggiorna la UI con la nuova versione
+      }
+    } catch (error) {
+      console.error('Error loading component version:', error);
+      // Mantieni la versione di fallback
+    }
+  }
+
   get translations() {
     return {
       it: {
         title: '🧠 AI Automation Builder',
         connected: 'Connesso',
+        version: 'v',
         placeholder: 'Descrivi l\'automazione (es: Accendi luci alle 20:00)...',
         generate: '🧠 Genera Automazione',
         export: '📥 Copia YAML',
@@ -131,6 +147,7 @@ class AIAutomationBuilderPanel extends LitElement {
       en: {
         title: '🧠 AI Automation Builder',
         connected: 'Connected',
+        version: 'v',
         placeholder: 'Describe your automation (e.g., Turn on lights at 8 PM)...',
         generate: '🧠 Generate Automation',
         export: '📥 Copy YAML',
@@ -954,7 +971,7 @@ class AIAutomationBuilderPanel extends LitElement {
           </svg>
         </button>
         <h1>${this.t.title}</h1>
-        <span class="status">✓ ${this.t.connected}</span>
+        <span class="status">✓ ${this.t.connected} ${this.t.version}${this.componentVersion}</span>
       </div>
 
       <div class="container">

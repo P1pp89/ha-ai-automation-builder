@@ -19,6 +19,8 @@ class AIAutomationBuilderCard extends LitElement {
     this.validationResult = null;
     this.isLoading = false;
     this.lang = 'it';
+    this.componentVersion = '2.0.0'; // Versione del componente (fallback)
+    this.loadComponentVersion(); // Carica versione dinamicamente
   }
 
   connectedCallback() {
@@ -46,6 +48,7 @@ class AIAutomationBuilderCard extends LitElement {
       it: {
         title: '🧠 AI Automation Builder',
         connected: 'Connesso',
+        version: 'v',
         placeholder: 'Descrivi l\'automazione (es: Accendi luci alle 20:00)...',
         generate: '🧠 Genera Automazione',
         export: '📥 Copia YAML',
@@ -64,6 +67,7 @@ class AIAutomationBuilderCard extends LitElement {
       en: {
         title: '🧠 AI Automation Builder',
         connected: 'Connected',
+        version: 'v',
         placeholder: 'Describe your automation (e.g., Turn on lights at 8 PM)...',
         generate: '🧠 Generate Automation',
         export: '📥 Copy YAML',
@@ -201,6 +205,19 @@ class AIAutomationBuilderCard extends LitElement {
     });
   }
 
+  async loadComponentVersion() {
+    try {
+      const result = await this.callWebSocket('ai_automation_builder/get_version', {});
+      if (result.version) {
+        this.componentVersion = result.version;
+        this.requestUpdate(); // Aggiorna la UI con la nuova versione
+      }
+    } catch (error) {
+      console.error('Error loading component version:', error);
+      // Mantieni la versione di fallback
+    }
+  }
+
   showNotification(message, type) {
     if (this.hass?.callService) {
       this.hass.callService('persistent_notification', 'create', {
@@ -219,7 +236,7 @@ class AIAutomationBuilderCard extends LitElement {
         <div class="card-header">
           <div class="header-content">
             <h2>${this.t.title}</h2>
-            <span class="status">✓ ${this.t.connected}</span>
+            <span class="status">✓ ${this.t.connected} ${this.t.version}${this.componentVersion}</span>
           </div>
         </div>
         <div class="card-content">

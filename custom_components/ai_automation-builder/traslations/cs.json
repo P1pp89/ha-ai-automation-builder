@@ -1,0 +1,24 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Konfigurace AI Automation Builder",
+        "description": "Nejprve nainstalujte Ollama z doplňků, poté zadejte koncový bod.",
+        "data": {
+          "ai_provider": "Poskytovatel AI",
+          "ai_endpoint": "API Koncový bod",
+          "api_key": "API Klíč (volitelné)",
+          "ai_model": "AI Model"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nelze se připojit ke koncovému bodu. Běží Ollama?",
+      "invalid_endpoint": "Neplatný koncový bod (použijte http:// nebo https://)",
+      "unknown": "Neznámá chyba"
+    },
+    "abort": {
+      "already_configured": "Již nakonfigurováno"
+    }
+  }
+}

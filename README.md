@@ -16,7 +16,7 @@
 [![Stars](https://img.shields.io/github/stars/P1pp89/ha-ai-automation-builder?style=for-the-badge&logo=github)](https://github.com/P1pp89/ha-ai-automation-builder/stargazers)
 [![Issues](https://img.shields.io/github/issues/P1pp89/ha-ai-automation-builder?style=for-the-badge&logo=github)](https://github.com/P1pp89/ha-ai-automation-builder/issues)
 
-[![Donate PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)]([https://www.paypal.com/donate/?hosted_button_id=HTZJULXKFP8M4])
+[![Donate PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white)](https://www.paypal.com/donate/?hosted_button_id=HTZJULXKFP8M4)
 
 **Generate Home Assistant automations with Artificial Intelligence!**
 
